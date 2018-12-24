@@ -1,4 +1,4 @@
-using iCrush.API.Modules;
+using iCrush.API.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace iCrush.API.Data
@@ -7,5 +7,6 @@ namespace iCrush.API.Data
     {
         public DataContext(DbContextOptions<DataContext> options ): base(options){}
         public DbSet<Value> Values { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }
