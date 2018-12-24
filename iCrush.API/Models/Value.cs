@@ -1,4 +1,4 @@
-namespace iCrush.API.Modules
+namespace iCrush.API.Models
 {
     public class Value
     {
