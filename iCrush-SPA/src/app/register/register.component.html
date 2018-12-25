@@ -1,0 +1,22 @@
+<form #registerForm="ngForm" (ngSubmit)="register()">
+  <h2 class="text-center text-primary">Sign Up</h2>
+  <hr>
+  <mat-form-field>
+    <input matInput placeholder="Username" required name="username" [(ngModel)]="model.username">
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="Password" required name="password" 
+    [type]="hide ? 'password' : 'text'" [(ngModel)]="model.password">
+    <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+  </mat-form-field>
+
+  <div class="form-group text-center">
+      <button mat-flat-button type="submit" color="accent" class="mr-2" [disabled]="!registerForm.valid">
+          Register
+      </button>
+      <button mat-flat-button type="button" color="warn" (click)="cancel()">
+          Cancel
+      </button>
+  </div>
+</form>

@@ -1,0 +1,36 @@
+.example-icon {
+  padding: 0 14px;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.mat-toolbar{
+  height:70px;
+}
+
+.mat-toolbar a{
+  text-decoration: none;
+  color: #fff;
+}
+
+.mat-toolbar .mat-list{
+  padding-top: 0;
+  padding-left: 30px;
+}
+
+.mat-toolbar .mat-list.mat-list-base{
+  display: flex;
+  flex: 1 1 auto;
+}
+
+.mat-toolbar .mat-form-field{
+  font-size: 16px;
+  top:5px;
+  margin-right: 15px;
+}
+
+.mat-toolbar .mat-flat-button{
+  top: 5px;
+}

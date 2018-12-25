@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="text-center" *ngIf="!registerMode">
+    <h1>Find your match</h1>
+    <p class="lead">Come on in to view your matches... All you need to do is sign up!</p>
+    <div class="text-center">
+      <button mat-flat-button type="submit" color="accent" class="mr-2" (click) = "registerToggle()">
+        Register
+      </button>
+      <button mat-flat-button type="submit" color="accent">
+        Learn More
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="registerMode" class="container">
+  <div class="row justify-content-center">
+    <div class="col-4">
+      <app-register [registerModeFromHome] = "registerMode"  (cancelRegister)="cancelRegisterMode($event)"></app-register>
+    </div>
+  </div>
+</div>
+
