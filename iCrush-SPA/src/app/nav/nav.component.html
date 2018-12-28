@@ -27,7 +27,7 @@
       </button>
     </mat-menu>
 
-    <form #loginForm="ngForm" (ngSubmit) = "login()" *ngIf="!loggedIn()">
+    <form #loginForm="ngForm" (ngSubmit) = "login(loginForm)" *ngIf="!loggedIn()">
       <mat-form-field>
         <input matInput placeholder="Username"  required 
           [(ngModel)]="model.username" name="username">

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { AlertifyService } from '../_services/alertify.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-nav',
@@ -15,10 +16,11 @@ export class NavComponent implements OnInit {
   ngOnInit() {
   }
 
-  login() {
+  login(form: NgForm) {
     this.authService.login(this.model)
       .subscribe(next => {
         this.alertify.success('Logged in successfully');
+        form.reset();
       }, error => {
         this.alertify.error(error);
       });
