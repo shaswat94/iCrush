@@ -22,7 +22,7 @@
 
 .mat-toolbar .mat-list.mat-list-base{
   display: flex;
-  flex: 1 1 auto;
+  /* flex: 1 1 auto; */
 }
 
 .mat-toolbar .mat-form-field{
