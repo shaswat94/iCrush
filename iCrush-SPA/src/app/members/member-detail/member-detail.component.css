@@ -1,0 +1,13 @@
+.user-card-container{
+    width: 30%;
+    display: inline-block;
+}
+
+.user-detail{
+    width: 60%;
+    display: inline-block;
+    vertical-align: top;
+}
+.user-known-as{
+    display: inline;
+}

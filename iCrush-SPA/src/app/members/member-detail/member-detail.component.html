@@ -1,0 +1,42 @@
+<div class="container member-detail-component mt-2">
+  <div class="user-card-container pr-5">
+      <mat-card class="user-card mb-4">
+          <mat-card-header>
+            <mat-card-title>
+              <mat-icon>
+                person
+              </mat-icon>
+              <div class="user-known-as">
+                {{ user?.knownAs }},
+              </div>
+              <span>
+                {{user?.age}}
+              </span>
+            </mat-card-title>
+            <mat-card-subtitle>
+              <mat-icon>place</mat-icon> <span>{{user?.city}}</span><br>
+            </mat-card-subtitle>
+          </mat-card-header>
+          <div class="card-image-wrapper">
+            <img mat-card-image src="{{user?.photoUrl}}" alt="{{user?.knownAs}}">
+          </div>
+          <mat-card-content>
+              <strong>Last Active:</strong>
+              <p>{{user.lastActive}}</p>
+              <strong>Date Created:</strong>
+              <p>{{user?.created}}</p>
+          </mat-card-content>
+          <mat-card-actions class="text-center">
+            <button mat-button>LIKE</button>
+            <button mat-button>MESSAGE</button>
+          </mat-card-actions>
+        </mat-card>
+  </div>
+  <div class="user-detail">
+    <mat-tab-group>
+      <mat-tab label="First"> Content 1 </mat-tab>
+      <mat-tab label="Second"> Content 2 </mat-tab>
+      <mat-tab label="Third"> Content 3 </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
