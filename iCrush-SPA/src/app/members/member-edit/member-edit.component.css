@@ -1,0 +1,21 @@
+.user-card-container{
+    display: inline-block;
+}
+
+.user-card-container .user-known-as{
+    display: inline-block;
+}
+
+.user-card-container .mat-icon{
+    position: relative;
+    top: 3px;
+}
+
+.user-detail{
+    display: inline-block;
+    vertical-align: top;
+}
+
+.full-width{
+    width: 100%;
+}

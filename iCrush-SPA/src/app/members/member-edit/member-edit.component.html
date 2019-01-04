@@ -1,0 +1,97 @@
+<div class="container member-detail-component mt-2">
+  <div class="row ml-1">
+      <div class="col-sm-4">
+        <h1>Your Profile</h1>
+      </div>
+      <div class="col-sm-8" *ngIf="editForm.dirty">
+          <div class="alert alert-info">
+              <strong>Information:</strong>
+                  You have made changes. Any unsaved changes will be lost!
+          </div>
+      </div>
+  </div>
+  <div class="user-card-container col-lg-4 col-md-6 col-sm-12">
+    <mat-card class="user-card mb-4">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>
+            person
+          </mat-icon>
+          <div class="user-known-as">
+            {{ user.knownAs }},
+          </div>
+          <span>
+            {{user.age}}
+          </span>
+        </mat-card-title>
+        <mat-card-subtitle>
+          <mat-icon>place</mat-icon> <span>{{user.city}}, {{user.country}}</span><br>
+        </mat-card-subtitle>
+      </mat-card-header>
+      <div class="card-image-wrapper">
+        <img mat-card-image src="{{user.photoUrl}}" alt="{{user.knownAs}}">
+      </div>
+      <mat-card-content>
+        <strong>Last Active:</strong>
+        <p>{{user.lastActive}}</p>
+        <strong>Date Created:</strong>
+        <p>{{user.created}}</p>
+      </mat-card-content>
+      <mat-card-actions class="text-center">
+        <button mat-button [disabled]="!editForm.dirty" form="editForm" class="btn-success">Save Changes</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  <div class="user-detail col-lg-8 col-md-5 col-sm-12">
+    <mat-tab-group>
+      <mat-tab label="About {{user.knownAs}}">
+        <form #editForm="ngForm" id="editForm" (ngSubmit)="updateUser()">
+          <!-- Description Material Form Field -->
+          <mat-form-field class="full-width mb-3">
+            <textarea matInput placeholder="Description" name="introduction" [(ngModel)]="user.introduction"
+              matTextareaAutosize matAutosizeMinRows=3 matAutosizeMaxRows=5></textarea>
+            <button mat-button *ngIf="user.introduction" matSuffix mat-icon-button aria-label="Clear" (click)="user.introduction=''">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <!-- Looking For Material Form Field -->
+          <mat-form-field class="full-width mb-3">
+            <textarea matInput placeholder="Looking For" name="lookingFor" [(ngModel)]="user.lookingFor"
+              matTextareaAutosize matAutosizeMinRows=3 matAutosizeMaxRows=5></textarea>
+            <button mat-button *ngIf="user.lookingFor" matSuffix mat-icon-button aria-label="Clear" (click)="user.lookingFor=''">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <!-- Interests Material Form Field -->
+          <mat-form-field class="full-width mb-3">
+            <textarea matInput placeholder="Interests" name="interests" [(ngModel)]="user.interests"
+              matTextareaAutosize matAutosizeMinRows=3 matAutosizeMaxRows=5></textarea>
+            <button mat-button *ngIf="user.interests" matSuffix mat-icon-button aria-label="Clear" (click)="user.interests=''">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <input matInput type="text" name="city" placeholder="City" [(ngModel)]="user.city">
+            <button mat-button *ngIf="user.city" matSuffix mat-icon-button aria-label="Clear" (click)="user.city=''">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <input matInput type="text" name="country" placeholder="Country" [(ngModel)]="user.country">
+            <button mat-button *ngIf="user.country" matSuffix mat-icon-button aria-label="Clear" (click)="user.country=''">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </form>
+      </mat-tab>
+
+      <mat-tab label="Photos">
+        <p>Your photos goes here.</p>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

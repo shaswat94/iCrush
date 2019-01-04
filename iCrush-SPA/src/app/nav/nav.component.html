@@ -19,7 +19,7 @@
     <mat-menu #menu="matMenu" class="mt-3">
       <button mat-menu-item>
           <mat-icon>account_circle</mat-icon>
-          <span>Edit Profile</span>
+          <span [routerLink]="['/member/edit']" >Edit Profile</span>
       </button>
       <button mat-menu-item (click)="logOut()">
         <mat-icon>power_settings_new</mat-icon>

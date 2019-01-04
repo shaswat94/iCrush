@@ -2,7 +2,7 @@
   <div class="row ml-1">
     <h1>{{user.knownAs}}'s Profile</h1>
   </div>
-  <div class="user-card-container pr-5 col-lg-3 col-md-6 col-sm-12">
+  <div class="user-card-container pr-5 col-lg-4 col-md-6 col-sm-12">
       <mat-card class="user-card mb-4">
           <mat-card-header>
             <mat-card-title>
@@ -17,7 +17,7 @@
               </span>
             </mat-card-title>
             <mat-card-subtitle>
-              <mat-icon>place</mat-icon> <span>{{user.city}}</span><br>
+              <mat-icon>place</mat-icon> <span>{{user.city}}, {{user.country}}</span><br>
             </mat-card-subtitle>
           </mat-card-header>
           <div class="card-image-wrapper">
