@@ -1,5 +1,8 @@
 <div class="container member-detail-component mt-2">
-  <div class="user-card-container pr-5">
+  <div class="row ml-1">
+    <h1>{{user.knownAs}}'s Profile</h1>
+  </div>
+  <div class="user-card-container pr-5 col-lg-3 col-md-6 col-sm-12">
       <mat-card class="user-card mb-4">
           <mat-card-header>
             <mat-card-title>
@@ -7,24 +10,24 @@
                 person
               </mat-icon>
               <div class="user-known-as">
-                {{ user?.knownAs }},
+                {{ user.knownAs }},
               </div>
               <span>
-                {{user?.age}}
+                {{user.age}}
               </span>
             </mat-card-title>
             <mat-card-subtitle>
-              <mat-icon>place</mat-icon> <span>{{user?.city}}</span><br>
+              <mat-icon>place</mat-icon> <span>{{user.city}}</span><br>
             </mat-card-subtitle>
           </mat-card-header>
           <div class="card-image-wrapper">
-            <img mat-card-image src="{{user?.photoUrl}}" alt="{{user?.knownAs}}">
+            <img mat-card-image src="{{user.photoUrl}}" alt="{{user.knownAs}}">
           </div>
           <mat-card-content>
               <strong>Last Active:</strong>
               <p>{{user.lastActive}}</p>
               <strong>Date Created:</strong>
-              <p>{{user?.created}}</p>
+              <p>{{user.created}}</p>
           </mat-card-content>
           <mat-card-actions class="text-center">
             <button mat-button>LIKE</button>
@@ -32,11 +35,24 @@
           </mat-card-actions>
         </mat-card>
   </div>
-  <div class="user-detail">
+  <div class="user-detail col-lg-8 col-md-5 col-sm-12">
     <mat-tab-group>
-      <mat-tab label="First"> Content 1 </mat-tab>
-      <mat-tab label="Second"> Content 2 </mat-tab>
-      <mat-tab label="Third"> Content 3 </mat-tab>
+      <mat-tab label="About {{user.knownAs}}"> 
+        <h4>Description</h4>
+        <p>{{user.introduction }}</p>
+        <h4>Looking For</h4>
+        <p>{{user.lookingFor}}</p>
+      </mat-tab>
+      <mat-tab label="Interests"> 
+        <h4>Interests</h4>
+        <p>{{user.interests}}</p>
+      </mat-tab>
+      <mat-tab label="Photos"> 
+          <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+      </mat-tab>
+      <mat-tab label="Messages"> 
+          <p>Messages will go here</p>
+      </mat-tab>
     </mat-tab-group>
   </div>
 </div>
