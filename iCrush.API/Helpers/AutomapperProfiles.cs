@@ -24,6 +24,9 @@ namespace iCrush.API.Helpers
             CreateMap<Photo, PhotosForDetailedDto>();
 
             CreateMap<UserForUpdateDto, User>().ForMember( dest => dest.Id, opt => opt.Ignore());
+
+            CreateMap<Photo, PhotoForReturnDto>();
+            CreateMap<PhotoForCreationDto, Photo>();
         }
     }
 }

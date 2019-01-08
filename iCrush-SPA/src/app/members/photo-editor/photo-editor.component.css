@@ -1,0 +1,63 @@
+.photo-container{
+    display: inline-block;
+    margin: 10px;
+}
+
+.image-thumbnail{
+    width: 128px;
+    height: 128px;
+}
+
+.action-buttons button:first-child{
+    border-radius: 0;
+    
+    position: relative;
+    top: 3px;
+}
+
+.action-buttons button.is-main{
+    background-color: #28a745;
+    color: #fff;
+}
+
+.action-buttons button:nth-child(2){
+    color: #dc3545;
+    position: relative;
+    top: 3px;
+}
+
+.dropzone{
+    border: 1px dotted grey;
+    padding: 20px;
+    margin-bottom: 10px;
+    min-height: 150px;
+}
+
+.water-mark{
+    text-align: center;
+    line-height: 150px;
+    color: lightgray;
+    position: relative;
+}
+
+.water-mark mat-icon{
+    position: relative;
+    top:4px;
+}
+
+.nv-file-over{
+    border: 3px dotted red;
+}
+
+input[type="file"]{
+    color: transparent;
+    opacity: 0.0; 
+    position: absolute; 
+    top:0.1px; 
+    left: 0.1px; 
+    bottom: 0.1px; 
+    right:0.1px; 
+    width: 100%; 
+    height:100%;
+    cursor: pointer;
+}

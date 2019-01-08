@@ -3,3 +3,7 @@
 body{
     background-color: #E1E2E1;
 }
+
+.no-border-radius{
+    border-radius: 0;
+}

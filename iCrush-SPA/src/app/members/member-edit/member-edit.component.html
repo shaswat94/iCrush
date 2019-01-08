@@ -38,7 +38,9 @@
         <p>{{user.created}}</p>
       </mat-card-content>
       <mat-card-actions class="text-center">
-        <button mat-button [disabled]="!editForm.dirty" form="editForm" class="btn-success">Save Changes</button>
+        <button mat-button [disabled]="!editForm.dirty" form="editForm" class="btn-success no-border-radius">
+          Save Changes
+        </button>
       </mat-card-actions>
     </mat-card>
   </div>
@@ -82,7 +84,8 @@
 
           <mat-form-field class="full-width">
             <input matInput type="text" name="country" placeholder="Country" [(ngModel)]="user.country">
-            <button mat-button *ngIf="user.country" matSuffix mat-icon-button aria-label="Clear" (click)="user.country=''">
+            <button mat-button *ngIf="user.country" matSuffix mat-icon-button aria-label="Clear" 
+              (click)="user.country=''">
               <mat-icon>close</mat-icon>
             </button>
           </mat-form-field>
@@ -90,7 +93,7 @@
       </mat-tab>
 
       <mat-tab label="Photos">
-        <p>Your photos goes here.</p>
+        <app-photo-editor [photos]="user.photos" (getMemberPhotoChange)="updateMainPhoto($event)"></app-photo-editor>
       </mat-tab>
     </mat-tab-group>
   </div>
