@@ -34,3 +34,8 @@
 .mat-toolbar .mat-flat-button{
   top: 5px;
 }
+
+.user-avatar img{
+  border-radius: 50%;
+  width: 50px;
+}

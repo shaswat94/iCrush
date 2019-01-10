@@ -14,7 +14,11 @@
     </mat-list>
     
     <span class="example-spacer"></span>
-
+    
+    <span class="user-avatar" *ngIf="loggedIn()">
+      <img src={{photoUrl}}>
+    </span>
+  
     <button mat-button [matMenuTriggerFor]="menu" *ngIf="loggedIn()">Welcome {{ authService.decodedToken?.unique_name | titlecase}} </button>
     <mat-menu #menu="matMenu" class="mt-3">
       <button mat-menu-item>

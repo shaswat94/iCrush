@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using iCrush.API.Data;
 using iCrush.API.Dtos;
 using iCrush.API.Models;
@@ -18,10 +19,12 @@ namespace iCrush.API.Controllers
     {
         private readonly IAuthRepository _repo;
         private readonly IConfiguration _config;
+        private readonly IMapper _mapper;
 
-        public AuthController(IAuthRepository repo, IConfiguration config)
+        public AuthController(IAuthRepository repo, IConfiguration config, IMapper mapper)
         {
             this._config = config;
+            this._mapper = mapper;
             this._repo = repo;
         }
 
@@ -47,11 +50,15 @@ namespace iCrush.API.Controllers
             var userFromRepo = await _repo.Login(userForLoginDto.Username.ToLower(), userForLoginDto.Password);
             if (userFromRepo == null)
                 return Unauthorized();
+            
+            var user = _mapper.Map<UserForListDto>(userFromRepo);
 
             var token = CreateJwtToken(userFromRepo);
 
-            return Ok(new{  
-                token= new JwtSecurityTokenHandler().WriteToken(token)
+            return Ok(new
+            {  
+                token= new JwtSecurityTokenHandler().WriteToken(token),
+                user
             });
         }
 

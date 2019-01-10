@@ -7,7 +7,7 @@
         [disabled]="photo.isMain">
         Main
       </button>
-      <button mat-button type="button">
+      <button mat-button type="button" (click)="deleteUserPhoto(photo.id)" [disabled]= "photo.isMain">
         <mat-icon>delete_outline</mat-icon>
       </button>
     </div>
