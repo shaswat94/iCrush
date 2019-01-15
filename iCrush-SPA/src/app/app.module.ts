@@ -18,6 +18,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatCardModule} from '@angular/material/card';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatRadioModule} from '@angular/material/radio';
+import {MatSelectModule} from '@angular/material/select';
 
 import 'hammerjs';
 
@@ -81,6 +82,7 @@ export function tokenGetter() {
       MatRadioModule,
       MatDatepickerModule,
       MatNativeDateModule,
+      MatSelectModule,
       BrowserAnimationsModule,
       RouterModule.forRoot(appRoutes),
       JwtModule.forRoot({

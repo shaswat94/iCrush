@@ -32,4 +32,8 @@ export class UserService {
   deleteUserPhoto(userId: number, id: number) {
     return this.http.delete(this.baseUrl + 'users/' + userId + '/photos/' + id);
   }
+
+  getListOfCountries() {
+    return this.http.get('https://restcountries.eu/rest/v2/all');
+  }
 }

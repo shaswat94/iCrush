@@ -21,7 +21,7 @@
             </mat-card-subtitle>
           </mat-card-header>
           <div class="card-image-wrapper">
-            <img mat-card-image src="{{user.photoUrl}}" alt="{{user.knownAs}}">
+            <img mat-card-image src="{{user.photoUrl || '../../../../../assets/user.png'}}" alt="{{user.knownAs}}">
           </div>
           <mat-card-content>
               <strong>Last Active:</strong>
@@ -37,15 +37,27 @@
   </div>
   <div class="user-detail col-lg-8 col-md-5 col-sm-12">
     <mat-tab-group>
-      <mat-tab label="About {{user.knownAs}}"> 
-        <h4>Description</h4>
-        <p>{{user.introduction }}</p>
-        <h4>Looking For</h4>
-        <p>{{user.lookingFor}}</p>
+      <mat-tab label="About {{user.knownAs}}">
+        <div *ngIf="(user.introduction && user.lookingFor)">
+            <h4>Description</h4>
+            <p>{{user.introduction }}</p>
+
+            <h4>Looking For</h4>
+            <p>{{user.lookingFor}}</p>  
+        </div>
+        <div *ngIf="!(user.introduction && user.lookingFor)" class="no-data">
+            No Information added yet!
+        </div>
       </mat-tab>
-      <mat-tab label="Interests"> 
-        <h4>Interests</h4>
-        <p>{{user.interests}}</p>
+      <mat-tab label="Interests">
+        <div *ngIf="(user.interests)">
+            <h4>Interests</h4>
+            <p>{{user.interests}}</p>
+        </div>
+        <div *ngIf="!(user.interests)" class="no-data">
+          No Information added yet!
+        </div> 
+        
       </mat-tab>
       <mat-tab label="Photos"> 
           <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>

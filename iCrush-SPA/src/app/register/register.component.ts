@@ -2,6 +2,9 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { AlertifyService } from '../_services/alertify.service';
 import { NgForm, FormGroup, FormControl, Validators, ValidatorFn, ValidationErrors, AbstractControl, FormBuilder } from '@angular/forms';
+import { UserService } from '../_services/user.service';
+import { User } from '../_models/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -12,11 +15,18 @@ export class RegisterComponent implements OnInit {
   @Input() registerModeFromHome: boolean;
   @Output() cancelRegister = new EventEmitter();
   hide = true;
-  model: any = {};
+  user: User;
   registerForm: FormGroup;
   gender = ['Male', 'Female'];
+  countries: any = [];
 
-  constructor(private authService: AuthService, private alertify: AlertifyService, private fb: FormBuilder) { }
+  constructor(
+    private authService: AuthService,
+    private alertify: AlertifyService,
+    private fb: FormBuilder,
+    private userService: UserService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.createRegisterForm();
@@ -28,7 +38,7 @@ export class RegisterComponent implements OnInit {
       password: ['', Validators.compose([
         Validators.required,
         Validators.minLength(4),
-        Validators.maxLength(8),
+        Validators.maxLength(12),
         this.patternValidator(/\d/, {
           hasNumber: true
         }),
@@ -53,14 +63,20 @@ export class RegisterComponent implements OnInit {
     );
   }
 
-  register(form: NgForm) {
-    // this.authService.register(this.model).subscribe(() => {
-    //   this.alertify.success('registeration successful');
-    //   form.reset();
-    // }, (error) => {
-    //   this.alertify.error(error);
-    // });
-    console.log(this.registerForm.value);
+  register() {
+    if (this.registerForm.valid) {
+      this.user = Object.assign({}, this.registerForm.value);
+      this.authService.register(this.user).subscribe(() => {
+        this.alertify.success('Registeration successful');
+        this.registerForm.reset();
+      }, (error) => {
+        this.alertify.error(error);
+      }, () => {
+        this.authService.login(this.user).subscribe(() => {
+          this.router.navigate(['/members']);
+        });
+      });
+    }
   }
 
   cancel() {

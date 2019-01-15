@@ -1,9 +1,9 @@
 <form [formGroup]="registerForm" (ngSubmit)="register(registerForm)">
   <h2 class="text-center text-primary">Sign Up</h2>
   <hr>
-  <mat-radio-group formControlName="gender">
+  <mat-radio-group formControlName="gender"> I am a &nbsp;
     <mat-radio-button class="mr-15" *ngFor="let g of gender" [value]="g">
-      {{g}}
+      {{g}}&nbsp;
     </mat-radio-button>
   </mat-radio-group>
 
@@ -18,11 +18,19 @@
   </mat-form-field>
   
   <mat-form-field>
-    <input matInput [matDatepicker]="picker" placeholder="Pick your birthday">
+    <input matInput [matDatepicker]="picker" placeholder="Pick your birthday" formControlName="dateOfBirth">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
     <mat-error *ngIf="registerForm.get('dateOfBirth').hasError('required')">Please enter your birthday</mat-error>
   </mat-form-field>
+
+  <!-- <mat-form-field>
+    <mat-select placeholder="Country">
+      <mat-option *ngFor="let country of countries" [value]="country.name">
+        {{country.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field> -->
 
   <mat-form-field>
     <input matInput placeholder="City" formControlName="city">
