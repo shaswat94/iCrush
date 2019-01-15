@@ -1,14 +1,61 @@
-<form #registerForm="ngForm" (ngSubmit)="register(registerForm)">
+<form [formGroup]="registerForm" (ngSubmit)="register(registerForm)">
   <h2 class="text-center text-primary">Sign Up</h2>
   <hr>
+  <mat-radio-group formControlName="gender">
+    <mat-radio-button class="mr-15" *ngFor="let g of gender" [value]="g">
+      {{g}}
+    </mat-radio-button>
+  </mat-radio-group>
+
   <mat-form-field>
-    <input matInput placeholder="Username" required name="username" [(ngModel)]="model.username">
+    <input matInput placeholder="Username" formControlName="username">
+    <mat-error *ngIf="registerForm.get('username').hasError('required')">Username is required</mat-error>
   </mat-form-field>
 
   <mat-form-field>
-    <input matInput placeholder="Password" required name="password" 
-    [type]="hide ? 'password' : 'text'" [(ngModel)]="model.password">
+    <input matInput placeholder="Known As" formControlName="knownAs">
+    <mat-error *ngIf="registerForm.get('knownAs').hasError('required')">Known as is required</mat-error>
+  </mat-form-field>
+  
+  <mat-form-field>
+    <input matInput [matDatepicker]="picker" placeholder="Pick your birthday">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-error *ngIf="registerForm.get('dateOfBirth').hasError('required')">Please enter your birthday</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="City" formControlName="city">
+    <mat-error *ngIf="registerForm.get('city').hasError('required')">City is required</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="Country" formControlName="country">
+    <mat-error *ngIf="registerForm.get('country').hasError('required')">Country is required</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="Password" formControlName="password" 
+    [type]="hide ? 'password' : 'text'" >
     <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+    <mat-error *ngIf="registerForm.get('password').hasError('required')">Password is required</mat-error>
+    <mat-error *ngIf="registerForm.get('password').hasError('minlength')">Password must have a minimum length of 4 characters</mat-error>
+    <mat-error *ngIf="registerForm.get('password').hasError('maxlength')">Password cannot exceed 8 characters</mat-error>
+    <mat-error *ngIf="!registerForm.get('password').hasError('minlength') && 
+      registerForm.get('password').hasError('hasSpecialCharacters')">Password must have at least 1 special character</mat-error>
+    <mat-error *ngIf="!registerForm.get('password').hasError('minlength') && 
+      !registerForm.get('password').hasError('hasSpecialCharacters') &&
+      registerForm.get('password').hasError('hasCapitalCase')">Password must have at least 1 in capital case</mat-error>
+    <mat-error *ngIf="!registerForm.get('password').hasError('minlength') && 
+      registerForm.get('password').hasError('hasNumber')">Password must have at least 1 number</mat-error>
+    <mat-error *ngIf="!registerForm.get('password').hasError('minlength') && 
+      registerForm.get('password').hasError('hasSmallCase')">Password must have at least 1 small case character</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input type="password" matInput placeholder="Confirm Password" formControlName="confirmPassword">
+    <mat-error *ngIf="registerForm.get('confirmPassword').hasError('required')">Confirm Password is required</mat-error>
+    <mat-error *ngIf="registerForm.get('confirmPassword').hasError('mismatch')">Passwords doesn't match</mat-error>
   </mat-form-field>
 
   <div class="form-group text-center">

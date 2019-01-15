@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { JwtModule } from '@auth0/angular-jwt';
 import { NgxGalleryModule } from 'ngx-gallery';
@@ -17,6 +17,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatCardModule} from '@angular/material/card';
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatRadioModule} from '@angular/material/radio';
 
 import 'hammerjs';
 
@@ -32,6 +33,7 @@ import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
 import { MemberCardComponent } from './members/member-card/member-card.component';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 import { appRoutes } from './routes';
 import { AuthGuard } from './_guards/auth.guard';
@@ -42,6 +44,7 @@ import { MemberEditComponent } from './members/member-edit/member-edit.component
 import { MemberEditResolver } from './_resolver/member-edit.resolver';
 import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
+import { MatNativeDateModule } from '@angular/material/core';
 
 export function tokenGetter() {
    return localStorage.getItem('token');
@@ -65,6 +68,7 @@ export function tokenGetter() {
       BrowserModule,
       HttpClientModule,
       FormsModule,
+      ReactiveFormsModule,
       MatIconModule,
       MatToolbarModule,
       MatListModule,
@@ -74,6 +78,9 @@ export function tokenGetter() {
       MatMenuModule,
       MatCardModule,
       MatTabsModule,
+      MatRadioModule,
+      MatDatepickerModule,
+      MatNativeDateModule,
       BrowserAnimationsModule,
       RouterModule.forRoot(appRoutes),
       JwtModule.forRoot({
