@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using AutoMapper;
 using iCrush.API.Data;
 using iCrush.API.Dtos;
+using iCrush.API.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace iCrush.API.Controllers
 {
+    [ServiceFilter(typeof(LogUserActivity))]
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
