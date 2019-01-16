@@ -20,6 +20,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 import 'hammerjs';
 
@@ -85,6 +86,7 @@ export function tokenGetter() {
       MatDatepickerModule,
       MatNativeDateModule,
       MatSelectModule,
+      MatPaginatorModule,
       BrowserAnimationsModule,
       RouterModule.forRoot(appRoutes),
       JwtModule.forRoot({
