@@ -1,0 +1,35 @@
+<div class="text-center mt-3">
+  <h2>Your matches - {{pagination.totalItems}} found</h2>
+</div>
+
+<form #form="ngForm" novalidate (ngSubmit)="outputUserFilters()">
+  <mat-form-field class="mr-2">
+    <input matInput placeholder="Age From" type="number" name="minAge" [(ngModel)]="userFilters.minAge">
+  </mat-form-field>
+
+  <mat-form-field class="mr-2">
+    <input matInput placeholder="Age To" type="number" name="maxAge" [(ngModel)]="userFilters.maxAge">
+  </mat-form-field>
+
+  <mat-form-field class="mr-2">
+    <mat-select placeholder="Show: " name="gender" [(ngModel)]="userFilters.gender">
+      <mat-option *ngFor="let gender of genderList" [value]="gender.value">{{gender.option}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button type="submit" class="btn btn-primary no-border-radius" style="margin-left:10px">
+    Apply Filters
+  </button>
+  <button type="button" class="btn btn-info no-border-radius" style="margin-left:10px; margin-right:10px" 
+    (click)="resetFilters()">
+    Reset Filter
+  </button>
+  <div class="order-by">
+    <mat-button-toggle-group name="orderBy" aria-label="Order By" style="float: right;" 
+      (change)="toggleFilterInputEvent($event)" [(ngModel)]="userFilters.orderBy">
+      <mat-button-toggle value="lastActive" class="no-border-radius">Last Active</mat-button-toggle>
+      <mat-button-toggle value="created" class="no-border-radius">Newest Member</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+</form>
+<br>

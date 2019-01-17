@@ -1,0 +1,8 @@
+.order-by{
+    display: inline-block;
+    float: right;
+}
+
+.order-by button{
+    border-radius: 0 !important;
+}

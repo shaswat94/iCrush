@@ -1,4 +1,8 @@
 <div class="container mt-5">
+  <div class="row col-sm-12">
+    <app-member-list-filters [pagination] = "pagination" [user] = "user" [userFilters]="userParams"
+      (outputFiltersEvent)="receiveOutputFilters($event)"></app-member-list-filters>
+  </div>
   <div class="row">
     <div *ngFor="let user of users" class="col-lg-3 col-md-3 col-sm-6">
       <app-member-card [user]="user"></app-member-card>

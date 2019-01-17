@@ -15,6 +15,8 @@ export class MemberListComponent implements OnInit {
   users: User[];
   pagination: Pagination;
   pageSizeOptions: number[] = [5, 10, 25, 100];
+  userParams: any = {};
+  user: User = JSON.parse(localStorage.getItem('user'));
 
   constructor(private userService: UserService, private alertify: AlertifyService,
                 private route: ActivatedRoute) { }
@@ -24,6 +26,11 @@ export class MemberListComponent implements OnInit {
       this.users = data['users'].result;
       this.pagination = data['users'].pagination;
     });
+
+    this.userParams.gender = this.user.gender === 'female' ? 'male' : 'female';
+    this.userParams.minAge = 18;
+    this.userParams.maxAge = 99;
+    this.userParams.orderBy = 'lastActive';
   }
 
   onPageChanged($event) {
@@ -32,7 +39,7 @@ export class MemberListComponent implements OnInit {
   }
 
   loadUsers() {
-    this.userService.getUsers(this.pagination.currentPage, this.pagination.itemsPerPage)
+    this.userService.getUsers(this.pagination.currentPage, this.pagination.itemsPerPage, this.userParams)
       .subscribe( (res: PaginatedResult<User[]>) => {
         this.users = res.result;
         this.pagination = res.pagination;
@@ -40,5 +47,10 @@ export class MemberListComponent implements OnInit {
       error => {
         this.alertify.error(error);
       });
+  }
+
+  receiveOutputFilters(event) {
+    this.userParams = event;
+    this.loadUsers();
   }
 }

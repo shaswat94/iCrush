@@ -21,6 +21,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 import 'hammerjs';
 
@@ -48,6 +49,7 @@ import { MemberEditResolver } from './_resolver/member-edit.resolver';
 import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MemberListFiltersComponent } from './members/member-list-filters/member-list-filters.component';
 
 export function tokenGetter() {
    return localStorage.getItem('token');
@@ -66,7 +68,8 @@ export function tokenGetter() {
       MemberDetailComponent,
       MemberEditComponent,
       PhotoEditorComponent,
-      TimeAgoPipe
+      TimeAgoPipe,
+      MemberListFiltersComponent
    ],
    imports: [
       BrowserModule,
@@ -87,6 +90,7 @@ export function tokenGetter() {
       MatNativeDateModule,
       MatSelectModule,
       MatPaginatorModule,
+      MatButtonToggleModule,
       BrowserAnimationsModule,
       RouterModule.forRoot(appRoutes),
       JwtModule.forRoot({
