@@ -22,9 +22,13 @@ export class RegisterComponent implements OnInit {
     {option: 'Female', value: 'female'}
   ];
   countries: any = [];
+<<<<<<< HEAD
   err_msg : any = [];
   err_msg_icon : {icon:String,icon_colr: String}[];
   clickedPasswordField : boolean = false;
+=======
+  err_msg : any =[];
+>>>>>>> Added a function to set error messages for register page validations
   constructor(
     private authService: AuthService,
     private alertify: AlertifyService,
@@ -152,6 +156,7 @@ export class RegisterComponent implements OnInit {
                       return hasErr;
                      
         case 'password':
+<<<<<<< HEAD
                        /*To hide the PasswordField error if not clicked on password field */
                        if(!this.clickedPasswordField){
                           return false;
@@ -246,6 +251,43 @@ export class RegisterComponent implements OnInit {
                         }
                         return hasErr;
                    
+=======
+                      const password = this.registerForm.get('password');
+                      if( password.hasError('required')){
+                        this.err_msg[6] = "Password is required";
+                        hasErr = true;
+                      }
+                      else if (password.hasError('minlength')){
+                        this.err_msg[6] = "Password must have a minimum length of 4 characters";
+                        hasErr = true;
+                      }
+                      else if (password.hasError('maxlength')){
+                         this.err_msg[6] = "Password cannot exceed 8 characters";
+                         hasErr = true;
+                      }
+                      else if (!password.hasError('minlength')){
+                        this.err_msg[6] = "";
+                            if(password.hasError('hasSpecialCharacters')){
+                              this.err_msg[6] = " Password must have at least 1 special character.";
+                              hasErr = true;
+                            }
+                            if(password.hasError('hasCapitalCase')){
+                              this.err_msg[6] = this.err_msg[6] +" Password must have at least 1 in capital case.";
+                              hasErr = true;
+                            }
+                            if(password.hasError('hasNumber')){
+                              this.err_msg[6] = this.err_msg[6] + " Password must have at least 1 number.";
+                              hasErr = true;
+                            }
+                          if(password.hasError('hasSmallCase'))
+                              this.err_msg[6] = this.err_msg[6] + " Password must have at least 1 small case character.";
+                              hasErr = true;
+                      }
+                      else{
+                        hasErr = false;
+                      }
+                      return hasErr;
+>>>>>>> Added a function to set error messages for register page validations
          case 'confirmPassword':
                       const confirmPassword = this.registerForm.get('confirmPassword');
                       if ( confirmPassword.hasError('required')){
