@@ -49,6 +49,7 @@
     <input matInput placeholder="Password" formControlName="password" 
     [type]="hide ? 'password' : 'text'" >
     <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+    <mat-error *ngIf="getErrorMessage('password')">{{err_msg[6]}}</mat-error>
   </mat-form-field>
     <mat-error *ngIf="getErrorMessage('password')">
         <div *ngFor="let msgs of err_msg[6].split('\n'); let i = index"  [ngStyle] ="{'color':err_msg_icon[i].icon_colr,'font-size':'0.8em'}">
@@ -56,7 +57,7 @@
         </div>
     </mat-error>
 
-  <mat-form-field>
+  <mat-form-field id= "confirmPasswordContainer">
     <input type="password" matInput placeholder="Confirm Password" formControlName="confirmPassword">
     <mat-error *ngIf="getErrorMessage('confirmPassword')">{{err_msg[7]}}</mat-error>
   </mat-form-field>
