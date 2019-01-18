@@ -19,7 +19,7 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   gender = ['Male', 'Female'];
   countries: any = [];
-
+  err_msg : any =[];
   constructor(
     private authService: AuthService,
     private alertify: AlertifyService,
@@ -86,57 +86,119 @@ export class RegisterComponent implements OnInit {
   passwordMatchValidator(g: FormGroup): any {
     return g.get('password').value === g.get('confirmPassword').value ? null : g.get('confirmPassword').setErrors({ 'mismatch': true });
   }
+  
+  /**Function which helps in displaying error message for different fields of the register page */
+  getErrorMessage(formField : String){
+    var hasErr = false;
+    switch(formField){
+      case 'username':
+                      const username = this.registerForm.get('username');
+                      if(username.hasError('required')){
+                        this.err_msg[1] = "Username is required";
+                        hasErr = true;
+                      }
+                      else{
+                        hasErr = false;
+                      }
+                      return hasErr;
+                      
+      case 'knownAs':
+                      const knownAs = this.registerForm.get('knownAs');
+                      if(knownAs.hasError('required')){
+                        this.err_msg[2] = "Known as is required";
+                        hasErr = true;
+                      }
+                      else{
+                        hasErr = false;
+                      }
+                      return hasErr;
+                     
+      case 'dateOfBirth':
+                      const dateOfBirth = this.registerForm.get('dateOfBirth');
+                      if( dateOfBirth.hasError('required')){
+                        this.err_msg[3] = "Please enter your birthday";
+                        hasErr = true;
+                      }
+                      else{
+                        hasErr = false;
+                      }
+                      return hasErr;
+                     
+       case 'city':
+                      const city = this.registerForm.get('city');
+                      if( city.hasError('required')){
+                        this.err_msg[4] = "City is required";
+                        hasErr = true;
+                      }
+                      else{
+                        hasErr = false;
+                      }
+                      return hasErr;
+                     
+       case 'country':
+                      const country = this.registerForm.get('country');
+                      if( country.hasError('required')){
+                        this.err_msg[5] = "Country is required";
+                        hasErr = true;
+                      }
+                      else{
+                        hasErr = false;
+                      }
+                      return hasErr;
+                     
+        case 'password':
+                      const password = this.registerForm.get('password');
+                      if( password.hasError('required')){
+                        this.err_msg[6] = "Password is required";
+                        hasErr = true;
+                      }
+                      else if (password.hasError('minlength')){
+                        this.err_msg[6] = "Password must have a minimum length of 4 characters";
+                        hasErr = true;
+                      }
+                      else if (password.hasError('maxlength')){
+                         this.err_msg[6] = "Password cannot exceed 8 characters";
+                         hasErr = true;
+                      }
+                      else if (!password.hasError('minlength')){
+                        this.err_msg[6] = "";
+                            if(password.hasError('hasSpecialCharacters')){
+                              this.err_msg[6] = " Password must have at least 1 special character.";
+                              hasErr = true;
+                            }
+                            if(password.hasError('hasCapitalCase')){
+                              this.err_msg[6] = this.err_msg[6] +" Password must have at least 1 in capital case.";
+                              hasErr = true;
+                            }
+                            if(password.hasError('hasNumber')){
+                              this.err_msg[6] = this.err_msg[6] + " Password must have at least 1 number.";
+                              hasErr = true;
+                            }
+                          if(password.hasError('hasSmallCase'))
+                              this.err_msg[6] = this.err_msg[6] + " Password must have at least 1 small case character.";
+                              hasErr = true;
+                      }
+                      else{
+                        hasErr = false;
+                      }
+                      return hasErr;
+         case 'confirmPassword':
+                      const confirmPassword = this.registerForm.get('confirmPassword');
+                      if ( confirmPassword.hasError('required')){
+                        this.err_msg[7] = "Confirm Password is required";
+                        hasErr = true;
+                      }
+                      else if( confirmPassword.hasError('mismatch')){
+                        this.err_msg[7] = "Passwords doesn't match";
+                        hasErr = true;
+                      }
+                      else{
+                        hasErr = false;
+                      }
+                      return hasErr;
 
-  getErrorMessage() {
-    const passwordField = this.registerForm.get('password');
-    const username = this.registerForm.get('username');
-    const confirmPassword = this.registerForm.get('confirmPassword');
-
-    return username.hasError('required') ? 'Username is required' :
-      passwordField.hasError('required') ? 'Password is required' :
-        passwordField.hasError('minlength') ? 'Password must have a minimum length of 4 characters' :
-          passwordField.hasError('maxlength') ? 'Password cannot exceed 8 characters' :
-            passwordField.hasError('hasSpecialCharacters') ? 'Password must have at least 1 special character' :
-              passwordField.hasError('hasCapitalCase') ? 'Password must have at least 1 in capital case' :
-                passwordField.hasError('hasNumber') ? 'Password must have at least 1 number' :
-                  confirmPassword.hasError('required') ? 'Confirm Password is required' :
-                    confirmPassword.hasError('mismatch') ? 'Passwords doesnot match' : '';
-
-    // if (username.hasError('required')) {
-    //   return 'Please enter a username';
-    // }
-
-    // if (passwordField.hasError('required')) {
-    //   return 'Please enter a password';
-    // }
-
-    // if (passwordField.hasError('minlength')) {
-    //   return 'Password must have a minimum length of 4 characters';
-    // }
-
-    // if (passwordField.hasError('maxlength')) {
-    //   return 'Password cannot exceed 8 characters';
-    // }
-
-    // if (passwordField.hasError('hasSpecialCharacters')) {
-    //   return 'Password must have at least 1 special character';
-    // }
-
-    // if (passwordField.hasError('hasCapitalCase')) {
-    //   return 'Password must have at least 1 in capital case';
-    // }
-
-    // if (passwordField.hasError('hasNumber')) {
-    //   return 'Password must have at least 1 number';
-    // }
-
-    // if (confirmPassword.hasError('required')) {
-    //   return 'Confirm password is required';
-    // }
-
-    // if (confirmPassword.hasError('mismatch')) {
-    //   return 'Password must match';
-    // }
+        default: 
+    }
   }
 
   patternValidator(regex: RegExp, error: ValidationErrors): ValidatorFn {
