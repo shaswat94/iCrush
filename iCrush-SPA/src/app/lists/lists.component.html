@@ -1,3 +1,27 @@
-<p>
-  lists works!
-</p>
+<div class="text-center mt-3">
+  <h2>{{likesParam === 'likers' ? 'Members who like me' : 'Members who I\'ve Liked'}} : {{pagination.totalItems}}</h2>
+</div>
+
+<div class="container mt-3">
+
+  <div class="row">
+    <mat-button-toggle-group [(ngModel)]="likesParam" name="likesParam" aria-label="Likee Liker" (click)="loadUsers()">
+      <mat-button-toggle value="likers">Members who like me</mat-button-toggle>
+      <mat-button-toggle value="likees">Members who I like</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+
+  <br>
+
+  <div class="row">
+    <div *ngFor="let user of users" class="col-lg-3 col-md-3 col-sm-6">
+      <app-member-card [user]="user"></app-member-card>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-center">
+    <mat-paginator [length]="pagination.totalItems" [pageSize]="pagination.itemsPerPage" [pageSizeOptions]="pageSizeOptions"
+      (page)="onPageChanged($event)">
+    </mat-paginator>
+  </div>
+</div>

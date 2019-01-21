@@ -50,6 +50,7 @@ import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MemberListFiltersComponent } from './members/member-list-filters/member-list-filters.component';
+import { ListsResolver } from './_resolver/lists.resolver';
 
 export function tokenGetter() {
    return localStorage.getItem('token');
@@ -112,7 +113,8 @@ export function tokenGetter() {
       MemberDetailResolver,
       MemberListResolver,
       MemberEditResolver,
-      PreventUnsavedChanges
+      PreventUnsavedChanges,
+      ListsResolver
    ],
    bootstrap: [
       AppComponent

@@ -13,9 +13,9 @@ import { map } from 'rxjs/operators';
 export class UserService {
   baseUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor (private http: HttpClient) { }
 
-  getUsers(page?, itemsPerPage?, userParams?): Observable<PaginatedResult<User[]>> {
+  getUsers (page?, itemsPerPage?, userParams?, likesParam?): Observable<PaginatedResult<User[]>> {
     const paginatedResult: PaginatedResult<User[]> = new PaginatedResult<User[]>();
 
     let params = new HttpParams();
@@ -32,6 +32,16 @@ export class UserService {
       params = params.append('orderBy', userParams.orderBy);
     }
 
+    if (likesParam === 'likers') {
+      params = params.append('likers', 'true');
+      params = params.append('likees', 'false');
+    }
+
+    if (likesParam === 'likees') {
+      params = params.append('likers', 'false');
+      params = params.append('likees', 'true');
+    }
+
     return this.http.get<User[]>(this.baseUrl + 'users', {observe: 'response', params})
       .pipe(
         map( response => {
@@ -45,23 +55,27 @@ export class UserService {
       );
   }
 
-  getUser(id): Observable<User> {
+  getUser (id): Observable<User> {
     return this.http.get<User>(this.baseUrl + 'users/' +  id);
   }
 
-  updateUser(id: number, user: User) {
+  updateUser (id: number, user: User) {
     return this.http.put<User>(this.baseUrl + 'users/' + id, user);
   }
 
-  setMainPhoto(userId: number, id: number) {
+  setMainPhoto (userId: number, id: number) {
     return this.http.post(this.baseUrl + 'users/' + userId + '/photos/' + id + '/setMain', {});
   }
 
-  deleteUserPhoto(userId: number, id: number) {
+  deleteUserPhoto (userId: number, id: number) {
     return this.http.delete(this.baseUrl + 'users/' + userId + '/photos/' + id);
   }
 
-  getListOfCountries() {
+  getListOfCountries () {
     return this.http.get('https://restcountries.eu/rest/v2/all');
+  }
+
+  sendLike(id: number, recipientId: number) {
+    return this.http.post(this.baseUrl + 'users/' + id + '/like/' + recipientId, {});
   }
 }
