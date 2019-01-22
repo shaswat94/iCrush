@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { AlertifyService } from '../_services/alertify.service';
-import { NgForm, FormGroup, FormControl, Validators, ValidatorFn, ValidationErrors, AbstractControl, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, ValidatorFn, ValidationErrors, AbstractControl, FormBuilder } from '@angular/forms';
 import { UserService } from '../_services/user.service';
 import { User } from '../_models/user';
 import { Router } from '@angular/router';
@@ -17,7 +17,10 @@ export class RegisterComponent implements OnInit {
   hide = true;
   user: User;
   registerForm: FormGroup;
-  gender = ['Male', 'Female'];
+  gender = [
+    {option: 'Male', value: 'male'},
+    {option: 'Female', value: 'female'}
+  ];
   countries: any = [];
 
   constructor(
@@ -54,7 +57,7 @@ export class RegisterComponent implements OnInit {
           })
       ])],
       confirmPassword: ['', Validators.required],
-      gender: ['Male'],
+      gender: ['male'],
       knownAs: ['', Validators.required],
       dateOfBirth: [null, Validators.required],
       city: ['', Validators.required],

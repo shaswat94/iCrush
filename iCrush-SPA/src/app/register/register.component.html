@@ -2,8 +2,8 @@
   <h2 class="text-center text-primary">Sign Up</h2>
   <hr>
   <mat-radio-group formControlName="gender"> I am a &nbsp;
-    <mat-radio-button class="mr-15" *ngFor="let g of gender" [value]="g">
-      {{g}}&nbsp;
+    <mat-radio-button class="mr-15" *ngFor="let g of gender" [value]="g.value">
+      {{g.option}}&nbsp;
     </mat-radio-button>
   </mat-radio-group>
 

@@ -22,6 +22,8 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatTableModule} from '@angular/material/table';
 
 import 'hammerjs';
 
@@ -51,6 +53,7 @@ import { PhotoEditorComponent } from './members/photo-editor/photo-editor.compon
 import { MatNativeDateModule } from '@angular/material/core';
 import { MemberListFiltersComponent } from './members/member-list-filters/member-list-filters.component';
 import { ListsResolver } from './_resolver/lists.resolver';
+import { MessagesResolver } from './_resolver/messages.resolver';
 
 export function tokenGetter() {
    return localStorage.getItem('token');
@@ -92,6 +95,8 @@ export function tokenGetter() {
       MatSelectModule,
       MatPaginatorModule,
       MatButtonToggleModule,
+      MatTooltipModule,
+      MatTableModule,
       BrowserAnimationsModule,
       RouterModule.forRoot(appRoutes),
       JwtModule.forRoot({
@@ -114,7 +119,8 @@ export function tokenGetter() {
       MemberListResolver,
       MemberEditResolver,
       PreventUnsavedChanges,
-      ListsResolver
+      ListsResolver,
+      MessagesResolver
    ],
    bootstrap: [
       AppComponent
