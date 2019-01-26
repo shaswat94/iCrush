@@ -1,3 +1,6 @@
+<head>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
 <form [formGroup]="registerForm" (ngSubmit)="register(registerForm)">
   <h2 class="text-center text-primary">Sign Up</h2>
   <hr>
@@ -42,14 +45,18 @@
     <mat-error *ngIf="getErrorMessage('country')">{{err_msg[5]}}</mat-error>
   </mat-form-field>
 
-  <mat-form-field>
+  <mat-form-field (click)="clickedPasswordField = true">
     <input matInput placeholder="Password" formControlName="password" 
     [type]="hide ? 'password' : 'text'" >
     <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-    <mat-error *ngIf="getErrorMessage('password')">{{err_msg[6]}}</mat-error>
   </mat-form-field>
+    <mat-error *ngIf="getErrorMessage('password')">
+        <div *ngFor="let msgs of err_msg[6].split('\n'); let i = index"  [ngStyle] ="{'color':err_msg_icon[i].icon_colr,'font-size':'0.8em'}">
+            <mat-icon class="material-icons" [ngStyle]="{'font-size':'1.2em'}">{{err_msg_icon[i].icon}}</mat-icon>{{msgs}}
+        </div>
+    </mat-error>
 
-  <mat-form-field id= "confirmPasswordContainer">
+  <mat-form-field>
     <input type="password" matInput placeholder="Confirm Password" formControlName="confirmPassword">
     <mat-error *ngIf="getErrorMessage('confirmPassword')">{{err_msg[7]}}</mat-error>
   </mat-form-field>
