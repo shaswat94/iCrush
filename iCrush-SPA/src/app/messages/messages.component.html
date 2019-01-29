@@ -1,4 +1,4 @@
-<div class="row message-action-buttons">
+<div class="row message-action-buttons col-sm-12">
   <mat-button-toggle-group name="messageContainer" [(ngModel)]="messageContainer">
     <mat-button-toggle value="Unread" matTooltip="Unread">
       <mat-icon>markunread</mat-icon>
@@ -15,14 +15,14 @@
 <div class="col-sm-12">
   <table class="table table-hover" style="cursor: pointer">
     <tr>
-      <th style="width: 40%">Message</th>
-      <th style="width: 20%">From / To</th>
+      <th style="width: 40%">From / To</th>
+      <th style="width: 20%">Message</th>
       <th style="width: 20%">Sent / Received</th>
       <th style="width: 20%"></th>
     </tr>
     <tr *ngFor="let message of messages" [routerLink]="['/members', 
-      messageContainer == 'Outbox' ? message.recipientId : message.senderId]">
-      <td>{{message.content}}</td>
+      messageContainer == 'Outbox' ? message.recipientId : message.senderId]" 
+        [queryParams]="{tab: 3}">
       <td>
         <div *ngIf="messageContainer != 'Outbox'">
           <img [src]="message.senderPhotoUrl" class="img-circle">
@@ -33,9 +33,10 @@
           <strong>&nbsp; {{message.recipientKnownAs}}</strong>
         </div>
       </td>
+      <td>{{message.content}}</td>
       <td>{{message.messageSent | timeAgo}}</td>
-      <td>
-        <button class="btn btn-danger">Delete</button>
+      <td class="delete-button-column">
+        <mat-icon (click)="$event.stopPropagation()" (click) = "deleteMessage(message.id)">delete</mat-icon>
       </td>
     </tr>
   </table>

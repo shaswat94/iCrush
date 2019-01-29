@@ -1,21 +1,30 @@
-.message-action-buttons{
-    position: relative;
-    margin-top: 2em;
+.message-action-buttons {
+  position: relative;
+  margin-top: 2em;
 }
 
 .message-action-buttons .mat-button-toggle-group {
-    margin: auto;
+  margin: auto;
 }
 
 table {
-    margin-top: 15px;
-  }
-  
-  .img-circle {
-    max-height: 50px;
-    border-radius: 50%;
-  }
-  
-  .table > tbody > tr > td {
-    vertical-align: middle;
-  }
+  margin-top: 15px;
+}
+
+.img-circle {
+  max-height: 50px;
+  border-radius: 50%;
+}
+
+.table>tbody>tr>td {
+  vertical-align: middle;
+}
+
+.delete-button-column mat-icon{
+    display: none;
+}
+
+.table>tbody>tr:hover mat-icon{
+    display: block;
+    color: red;
+}

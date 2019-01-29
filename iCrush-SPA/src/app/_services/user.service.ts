@@ -16,7 +16,8 @@ export class UserService {
 
   constructor (private http: HttpClient) { }
 
-  getUsers (page?, itemsPerPage?, userParams?, likesParam?): Observable<PaginatedResult<User[]>> {
+  // Gets paginated list of users from DB
+  getUsers(page?, itemsPerPage?, userParams?, likesParam?): Observable<PaginatedResult<User[]>> {
     const paginatedResult: PaginatedResult<User[]> = new PaginatedResult<User[]>();
 
     let params = new HttpParams();
@@ -56,30 +57,37 @@ export class UserService {
       );
   }
 
-  getUser (id): Observable<User> {
+  // Gets a particular user based on userId
+  getUser(id): Observable<User> {
     return this.http.get<User>(this.baseUrl + 'users/' +  id);
   }
 
+  // Updates user data in the DB
   updateUser (id: number, user: User) {
     return this.http.put<User>(this.baseUrl + 'users/' + id, user);
   }
 
+  // Sets user's main profile photo
   setMainPhoto (userId: number, id: number) {
     return this.http.post(this.baseUrl + 'users/' + userId + '/photos/' + id + '/setMain', {});
   }
 
+  // Deletes user photo from photo gallery
   deleteUserPhoto (userId: number, id: number) {
     return this.http.delete(this.baseUrl + 'users/' + userId + '/photos/' + id);
   }
 
+  // Unused as of now.
   getListOfCountries () {
     return this.http.get('https://restcountries.eu/rest/v2/all');
   }
 
+  // Sends like to an user
   sendLike(id: number, recipientId: number) {
     return this.http.post(this.baseUrl + 'users/' + id + '/like/' + recipientId, {});
   }
 
+  // Gets list of messages for a particular logged in User
   getMessages(id: number, page?, itemsPerPage?, messageContainer?) {
     const paginatedResult: PaginatedResult<Message[]> = new PaginatedResult<Message[]>();
 
@@ -105,5 +113,18 @@ export class UserService {
           return paginatedResult;
       })
     );
+  }
+
+  // Gets the conversation thread between 2 users
+  getMessageThread(id: number, recipientId) {
+    return this.http.get<Message[]>(this.baseUrl + 'users/' + id + '/messages/thread/' + recipientId);
+  }
+
+  sendMessage(id: number, message: Message) {
+    return this.http.post(this.baseUrl + 'users/' + id + '/messages', message);
+  }
+
+  deleteMessage(id: number, userId: number) {
+    return this.http.post(this.baseUrl + 'users/' + userId + '/messages/' + id, {});
   }
 }

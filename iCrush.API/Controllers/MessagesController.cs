@@ -43,7 +43,10 @@ namespace iCrush.API.Controllers
         public async Task<IActionResult> CreateMessage(int userId, 
             MessageForCreationDto messageForCreationDto)
         {
-            if(userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            var sender = await _repo.GetUser(userId);
+
+            if(sender != null && 
+                sender.Id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
             
             messageForCreationDto.SenderId = userId;
@@ -54,13 +57,13 @@ namespace iCrush.API.Controllers
 
             var message = _mapper.Map<Message>(messageForCreationDto);
             
-            var messageToReturn = _mapper.Map<MessageForCreationDto>(message);
-            
             _repo.Add(message);
 
-            if(await _repo.SaveAll())
+            if(await _repo.SaveAll()) {
+                var messageToReturn = _mapper.Map<MessageToReturnDto>(message);
                 return CreatedAtRoute("GetMessage", new {id = message.Id}, messageToReturn);
-            
+            }
+
             throw new Exception("Creating the message to save.");
         }
 
@@ -92,6 +95,29 @@ namespace iCrush.API.Controllers
             var mesasgeThread = _mapper.Map<IEnumerable<MessageToReturnDto>>(messagesFromRepo);
 
             return Ok(mesasgeThread);
+        }
+
+        [HttpPost("{id}")]
+        public async Task<IActionResult> DeleteMessage(int id, int userId)
+        {
+             if(userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            var messagesFromRepo = await _repo.GetMessage(id);
+
+            if(messagesFromRepo.SenderId == userId)
+                messagesFromRepo.SenderDeleted = true;
+            
+            if( messagesFromRepo.RecipientId == userId)
+                messagesFromRepo.ReceiverDeleted = true;
+
+            if(messagesFromRepo.SenderDeleted && messagesFromRepo.ReceiverDeleted)
+                _repo.Delete(messagesFromRepo);
+
+            if(await _repo.SaveAll())
+                return NoContent();
+            
+            throw new Exception("Error deleting the message");
         }
     }
 }

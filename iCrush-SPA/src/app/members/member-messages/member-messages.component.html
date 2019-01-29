@@ -1,0 +1,53 @@
+<div class="container">
+  <div class="no-messages" *ngIf="messages?.length === 0">
+    <mat-icon>mood_bad</mat-icon>
+    <p>Please send messages to start a conversation.</p>
+  </div>
+  <div class="message" *ngFor="let message of messages">
+
+    <!-- To them -->
+    <div *ngIf="message.senderId === recipientId" class="not-own-message">
+      <div class="header">
+        <img src="{{message.senderPhotoUrl}}" alt="{{message.senderKnownAs}}" class="rounded-circle">
+        <div>
+          <strong>{{message.senderKnownAs}}</strong>
+        </div>
+      </div>
+      <div class="content">
+        <p> {{message.content}} </p>
+        <small class="text-muted">{{message.messageSent | timeAgo}} </small>
+      </div>
+    </div>
+
+    <!-- To me -->
+    <div *ngIf="message.senderId != recipientId" class="own-message">
+      <div class="header">
+        <img src="{{message.senderPhotoUrl}}" alt="{{message.senderKnownAs}}" class="rounded-circle">
+        <div>
+          <strong>{{message.senderKnownAs}}</strong>
+        </div>
+      </div>
+      <div class="content">
+        <p> {{message.content}} </p>
+        <small class="text-muted">{{message.messageSent | timeAgo}} </small>
+        <small class="text-muted message-not-read" *ngIf="!message.isRead">
+          <mat-icon>done</mat-icon>
+        </small>
+        <small class="text-muted message-read" *ngIf="message.isRead">
+          <mat-icon>done_all</mat-icon>
+        </small>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="chat-form-wrapper">
+  <form #messageForm="ngForm" (ngSubmit) = "messageForm.valid && sendMessage()">
+    <input class="chat-input"  [(ngModel)]="newMessage.content"
+      name="content"
+      required
+      placeholder="Type your message here">
+    <button mat-button class="chat-button" [disabled]="!messageForm.valid">
+      <mat-icon>send</mat-icon>
+    </button>
+  </form>
+</div>

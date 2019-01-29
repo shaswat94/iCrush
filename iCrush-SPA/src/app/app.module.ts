@@ -54,6 +54,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MemberListFiltersComponent } from './members/member-list-filters/member-list-filters.component';
 import { ListsResolver } from './_resolver/lists.resolver';
 import { MessagesResolver } from './_resolver/messages.resolver';
+import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
 
 export function tokenGetter() {
    return localStorage.getItem('token');
@@ -73,7 +74,8 @@ export function tokenGetter() {
       MemberEditComponent,
       PhotoEditorComponent,
       TimeAgoPipe,
-      MemberListFiltersComponent
+      MemberListFiltersComponent,
+      MemberMessagesComponent
    ],
    imports: [
       BrowserModule,

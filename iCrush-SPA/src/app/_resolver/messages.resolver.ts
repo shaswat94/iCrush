@@ -11,7 +11,7 @@ import { AuthService } from '../_services/auth.service';
 export class MessagesResolver implements Resolve<Message[]> {
     pageNumber = 1;
     pageSize = 5;
-    messageContainer = 'Unread';
+    messageContainer = 'Outbox';
 
     constructor(private userService: UserService, private authService: AuthService,
             private router: Router, private alertify: AlertifyService) {}

@@ -118,18 +118,16 @@ namespace iCrush.API.Data
             return await _context.Messages.FirstOrDefaultAsync( m => m.Id == id);
         }
 
-        public Task<PagedList<Message>> GetMessagesForUser()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<IEnumerable<Message>> GetMessageThread(int userId, int recipientId)
         {
             var messages = await _context.Messages
                 .Include(u => u.Sender).ThenInclude(p => p.Photos)
                 .Include(u => u.Recipient).ThenInclude(p => p.Photos)
-                .Where(m => m.RecipientId == userId && m.SenderId == recipientId || 
-                m.RecipientId == recipientId && m.SenderId == userId)
+                .Where(m => m.RecipientId == userId 
+                    && m.ReceiverDeleted == false
+                    && m.SenderId == recipientId || 
+                    m.RecipientId == recipientId 
+                    && m.SenderId == userId && m.SenderDeleted == false)
                 .OrderByDescending(m => m.MessageSent).ToListAsync();
             
             return messages;
@@ -145,14 +143,14 @@ namespace iCrush.API.Data
             switch(messageParams.MessageContainer)
             {
                 case "Inbox":
-                    messages = messages.Where(u => u.RecipientId == messageParams.UserId);
+                    messages = messages.Where(u => u.RecipientId == messageParams.UserId && u.ReceiverDeleted == false);
                     break;
                 case "Outbox":
-                    messages = messages.Where(u => u.SenderId == messageParams.UserId);
+                    messages = messages.Where(u => u.SenderId == messageParams.UserId && u.SenderDeleted == false);
                     break;
                 default: //Unread messages
                     messages = messages.Where( u => u.RecipientId == messageParams.UserId 
-                    && u.IsRead == false);
+                     && u.SenderDeleted == false  && u.IsRead == false);
                     break;
             }
 
