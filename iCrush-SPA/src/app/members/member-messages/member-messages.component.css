@@ -20,13 +20,8 @@
 }
 
 .message{
-    display: flex;
     height: auto;
-    width: 90%;
-    align-items:stretch;
-    background-color: #eee;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.26), 0 3px 6px rgba(0,0,0,0.23);
-    margin-bottom: 12px;
+    margin-bottom: 5%;
 }
 
 @media screen and (min-width: 640px){
@@ -45,13 +40,17 @@
 .message .not-own-message{
     flex: 1;
     display: flex;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.26), 0 3px 6px rgba(0,0,0,0.23);
+    max-width: 400px;
 }
 
 .message .own-message{
     background-color: #01579B;
-    float: right;
     flex: 1;
     display: flex;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.26), 0 3px 6px rgba(0,0,0,0.23);
+    max-width:400px;
+    margin-left:40%;
 }
 
 .message .header{
@@ -75,6 +74,7 @@
     padding: 10px;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
+    width:80%;
 }
 
 .chat-form-wrapper{
