@@ -133,3 +133,6 @@
     color: #228fff;
 }
 
+.content p{
+    word-break: break-all;
+}
