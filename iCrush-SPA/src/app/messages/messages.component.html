@@ -1,5 +1,5 @@
 <div class="row message-action-buttons col-sm-12">
-  <mat-button-toggle-group name="messageContainer" [(ngModel)]="messageContainer">
+  <mat-button-toggle-group name="messageContainer" [(ngModel)]="messageContainer" (change)="loadMessages()">
     <mat-button-toggle value="Unread" matTooltip="Unread">
       <mat-icon>markunread</mat-icon>
     </mat-button-toggle>
