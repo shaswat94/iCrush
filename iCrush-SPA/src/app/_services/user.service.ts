@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../_models/user';
 import { PaginatedResult } from '../_models/pagination';
 import { map } from 'rxjs/operators';
 import { Message } from '../_models/message';
+import { HubConnectionBuilder } from '@aspnet/signalr';
 
 
 @Injectable({
@@ -14,7 +15,7 @@ import { Message } from '../_models/message';
 export class UserService {
   baseUrl = environment.apiUrl;
 
-  constructor (private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   // Gets paginated list of users from DB
   getUsers(page?, itemsPerPage?, userParams?, likesParam?): Observable<PaginatedResult<User[]>> {
@@ -22,7 +23,7 @@ export class UserService {
 
     let params = new HttpParams();
 
-    if (page  != null && itemsPerPage != null) {
+    if (page != null && itemsPerPage != null) {
       params = params.append('pageNumber', page);
       params = params.append('pageSize', itemsPerPage);
     }
@@ -44,9 +45,9 @@ export class UserService {
       params = params.append('likees', 'true');
     }
 
-    return this.http.get<User[]>(this.baseUrl + 'users', {observe: 'response', params})
+    return this.http.get<User[]>(this.baseUrl + 'users', { observe: 'response', params })
       .pipe(
-        map( response => {
+        map(response => {
           paginatedResult.result = response.body;
           if (response.headers.get('Pagination') != null) {
             paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
@@ -59,26 +60,26 @@ export class UserService {
 
   // Gets a particular user based on userId
   getUser(id): Observable<User> {
-    return this.http.get<User>(this.baseUrl + 'users/' +  id);
+    return this.http.get<User>(this.baseUrl + 'users/' + id);
   }
 
   // Updates user data in the DB
-  updateUser (id: number, user: User) {
+  updateUser(id: number, user: User) {
     return this.http.put<User>(this.baseUrl + 'users/' + id, user);
   }
 
   // Sets user's main profile photo
-  setMainPhoto (userId: number, id: number) {
+  setMainPhoto(userId: number, id: number) {
     return this.http.post(this.baseUrl + 'users/' + userId + '/photos/' + id + '/setMain', {});
   }
 
   // Deletes user photo from photo gallery
-  deleteUserPhoto (userId: number, id: number) {
+  deleteUserPhoto(userId: number, id: number) {
     return this.http.delete(this.baseUrl + 'users/' + userId + '/photos/' + id);
   }
 
   // Unused as of now.
-  getListOfCountries () {
+  getListOfCountries() {
     return this.http.get('https://restcountries.eu/rest/v2/all');
   }
 
@@ -95,7 +96,7 @@ export class UserService {
 
     params = params.append('messageContainer', messageContainer);
 
-    if (page  != null && itemsPerPage != null) {
+    if (page != null && itemsPerPage != null) {
       params = params.append('pageNumber', page);
       params = params.append('pageSize', itemsPerPage);
     }
@@ -106,11 +107,11 @@ export class UserService {
     }).pipe(
       map(response => {
         paginatedResult.result = response.body;
-          if (response.headers.get('Pagination') != null) {
-            paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
-          }
+        if (response.headers.get('Pagination') != null) {
+          paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
+        }
 
-          return paginatedResult;
+        return paginatedResult;
       })
     );
   }
@@ -121,6 +122,20 @@ export class UserService {
   }
 
   sendMessage(id: number, message: Message) {
+    const connection = new HubConnectionBuilder()
+                       .withUrl('http://localhost:5000/message', { accessTokenFactory: () => localStorage.getItem('token') })
+                       .build();
+
+    connection.on('ReceiveMessage', (user, data) => {
+      console.log(data);
+      console.log(user);
+    });
+
+    connection
+      .start()
+      .then(() => console.log('connected'))
+      .catch((err) => console.error(err.toString()));
+
     return this.http.post(this.baseUrl + 'users/' + id + '/messages', message);
   }
 

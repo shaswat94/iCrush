@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using iCrush.API.Helpers;
 using AutoMapper;
+using iCrush.API.Hubs;
 
 namespace iCrush.API
 {
@@ -36,12 +37,13 @@ namespace iCrush.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                             .AddJsonOptions( options => options.SerializerSettings.ReferenceLoopHandling = 
-                             Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+                             .AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling =
+                            Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddDbContext<DataContext>(options => options.UseSqlite(
                                                 Configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient<Seed>();
             services.AddCors();
+            services.AddSignalR();
             services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
             services.AddAutoMapper();
             services.AddScoped<IAuthRepository, AuthRepository>();
@@ -49,7 +51,8 @@ namespace iCrush.API
 
             //Inject JWT Service Authentication
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options => {
+            .AddJwtBearer(options =>
+            {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
@@ -71,11 +74,14 @@ namespace iCrush.API
             }
             else
             {
-                app.UseExceptionHandler(builder => {
-                    builder.Run(async context => {
+                app.UseExceptionHandler(builder =>
+                {
+                    builder.Run(async context =>
+                    {
                         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                         var error = context.Features.Get<IExceptionHandlerFeature>();
-                        if(error != null){
+                        if (error != null)
+                        {
                             context.Response.AddApplicationError(error.Error.Message);
                             await context.Response.WriteAsync(error.Error.Message);
                         }
@@ -86,9 +92,12 @@ namespace iCrush.API
 
             // app.UseHttpsRedirection();
             //seeder.SeedUsers();
-            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:4200"));
             app.UseAuthentication();
             app.UseMvc();
+            app.UseSignalR(routes => { 
+                routes.MapHub<ChatHub>("/message");
+            });
         }
     }
 }

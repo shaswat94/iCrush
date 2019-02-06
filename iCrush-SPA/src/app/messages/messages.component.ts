@@ -47,6 +47,9 @@ export class MessagesComponent implements OnInit {
         .subscribe(res => {
           this.messages.splice(this.messages.findIndex(m => m.id === id), 1);
           this.alertify.success('Message deleted successfully');
+
+          if (this.messages.length === 0) { this.loadMessages(); }
+
         }, err => this.alertify.error('Failed to delete this message'));
     }, () => { });
   }
