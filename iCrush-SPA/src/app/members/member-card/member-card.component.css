@@ -79,3 +79,12 @@
     padding-left: 23px;
 }
 
+mat-card.online{
+    background: rgb(76, 175, 80);
+    color: #fff;
+}
+
+mat-card.online mat-card-subtitle div, mat-card.online mat-card-subtitle span, mat-card.online mat-card-subtitle mat-icon{
+    color: #fff;
+}
+

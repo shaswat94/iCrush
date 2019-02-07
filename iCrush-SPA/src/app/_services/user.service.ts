@@ -133,4 +133,8 @@ export class UserService {
     return this.http.post(this.baseUrl + 'users/' + userId + '/messages/' + id + '/read', {})
       .subscribe();
   }
+
+  setUserOnlineStatusOnLogout(userId: number, status: boolean) {
+    return this.http.post(this.baseUrl + 'users/' + userId + '/setStatus/' + status, {});
+  }
 }

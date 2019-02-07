@@ -98,5 +98,20 @@ namespace iCrush.API.Controllers
 
             return BadRequest("Failed to like the user");
         }
+
+        [HttpPost("{id}/setStatus/{status}")]
+        public async Task<IActionResult> SetUserOnlineStatus(int id, bool status)
+        {
+            if(id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            var userFromRepo = await _repo.GetUser(id);
+            userFromRepo.IsActive = false;
+
+            if(await _repo.SaveAll())
+                return NoContent();
+            
+            return BadRequest();
+        }
     }
 }

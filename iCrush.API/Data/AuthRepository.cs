@@ -75,5 +75,13 @@ namespace iCrush.API.Data
 
             return false;
         }
+
+        public async void SetUserOnlineStatus(int userId, bool status)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            user.IsActive = status;
+
+            _context.SaveChanges();
+        }
     }
 }

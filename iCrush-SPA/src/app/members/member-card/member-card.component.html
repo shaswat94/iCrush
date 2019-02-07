@@ -1,4 +1,4 @@
-<mat-card class="user-card mb-4">
+<mat-card class="user-card mb-4" [ngClass]="{ 'online': user.isActive}">
   <mat-card-header>
     <mat-card-title>
       <mat-icon>

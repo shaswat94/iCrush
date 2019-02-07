@@ -54,6 +54,8 @@ namespace iCrush.API.Controllers
 
             var token = CreateJwtToken(userFromRepo);
 
+            _repo.SetUserOnlineStatus(user.Id, true);
+
             return Ok(new
             {  
                 token= new JwtSecurityTokenHandler().WriteToken(token),

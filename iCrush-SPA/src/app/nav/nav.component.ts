@@ -3,6 +3,7 @@ import { AuthService } from '../_services/auth.service';
 import { AlertifyService } from '../_services/alertify.service';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { UserService } from '../_services/user.service';
 
 @Component({
   selector: 'app-nav',
@@ -12,7 +13,10 @@ import { Router } from '@angular/router';
 export class NavComponent implements OnInit {
   hide = true;
   model: any = {};
-  constructor(public authService: AuthService, private alertify: AlertifyService, private router: Router) { }
+  constructor(public authService: AuthService,
+    private userService: UserService,
+    private alertify: AlertifyService,
+    private router: Router) { }
   photoUrl: string;
   ngOnInit() {
     this.authService.currentPhotoUrl.subscribe(photoUrl => this.photoUrl = photoUrl);
@@ -35,12 +39,17 @@ export class NavComponent implements OnInit {
   }
 
   logOut() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    this.userService.setUserOnlineStatusOnLogout(this.authService.decodedToken.nameid, false)
+      .subscribe(res => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
 
-    this.authService.decodedToken = null;
-    this.authService.currentUser = null;
-    this.alertify.message('Logged out');
-    this.router.navigate(['/home']);
+        this.authService.decodedToken = null;
+        this.authService.currentUser = null;
+        this.alertify.message('Logged out');
+        this.router.navigate(['/home']);
+      }, err => {
+        this.alertify.error(err);
+      });
   }
 }
