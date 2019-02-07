@@ -92,11 +92,11 @@ namespace iCrush.API
 
             // app.UseHttpsRedirection();
             //seeder.SeedUsers();
-            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:4200"));
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:4200").AllowCredentials());
             app.UseAuthentication();
             app.UseMvc();
             app.UseSignalR(routes => { 
-                routes.MapHub<ChatHub>("/message");
+                routes.MapHub<ChatHub>("/signalr");
             });
         }
     }

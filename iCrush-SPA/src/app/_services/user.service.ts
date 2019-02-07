@@ -122,20 +122,6 @@ export class UserService {
   }
 
   sendMessage(id: number, message: Message) {
-    const connection = new HubConnectionBuilder()
-                       .withUrl('http://localhost:5000/message', { accessTokenFactory: () => localStorage.getItem('token') })
-                       .build();
-
-    connection.on('ReceiveMessage', (user, data) => {
-      console.log(data);
-      console.log(user);
-    });
-
-    connection
-      .start()
-      .then(() => console.log('connected'))
-      .catch((err) => console.error(err.toString()));
-
     return this.http.post(this.baseUrl + 'users/' + id + '/messages', message);
   }
 

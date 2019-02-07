@@ -4,6 +4,7 @@ import { UserService } from 'src/app/_services/user.service';
 import { AuthService } from 'src/app/_services/auth.service';
 import { AlertifyService } from 'src/app/_services/alertify.service';
 import { tap } from 'rxjs/internal/operators/tap';
+import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 
 @Component({
   selector: 'app-member-messages',
@@ -14,12 +15,20 @@ export class MemberMessagesComponent implements OnInit {
   @Input() recipientId: number;
   messages: Message[];
   newMessage: any = {};
+  hubConnection: HubConnection;
 
   constructor(private userService: UserService, private authService: AuthService,
       private alertify: AlertifyService) { }
 
   ngOnInit() {
+    const builder = new HubConnectionBuilder();
     this.loadMessages();
+
+    this.hubConnection = builder.withUrl('http://localhost:5000/signalr').build();
+
+    this.hubConnection.on('Send', (id, message) => {
+      console.log(id, message);
+    });
   }
 
   loadMessages() {
@@ -42,10 +51,19 @@ export class MemberMessagesComponent implements OnInit {
 
   sendMessage() {
     this.newMessage.recipientId = this.recipientId;
+
+    this.hubConnection
+      .start()
+      .then(() => console.log('connected'))
+      .catch((err) => console.error(err.toString()));
+
     this.userService.sendMessage(this.authService.decodedToken.nameid, this.newMessage)
       .subscribe((message: Message) => {
         this.messages.unshift(message);
         this.newMessage.content = '';
+
+        this.hubConnection.invoke('SendMessage', this.recipientId, message.content);
+
     }, error => this.alertify.error(error));
   }
 }
