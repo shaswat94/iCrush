@@ -22,12 +22,18 @@ export class MemberMessagesComponent implements OnInit {
 
   ngOnInit() {
     const builder = new HubConnectionBuilder();
-    this.loadMessages();
-
     this.hubConnection = builder.withUrl('http://localhost:5000/signalr').build();
 
+    this.hubConnection
+      .start()
+      .then(() => console.log('connected'))
+      .catch((err) => console.error(err.toString()));
+
+    this.loadMessages();
+
     this.hubConnection.on('Send', (id, message) => {
-      console.log(id, message);
+      console.log('Back from Server');
+      this.messages.unshift(message);
     });
   }
 
@@ -52,17 +58,16 @@ export class MemberMessagesComponent implements OnInit {
   sendMessage() {
     this.newMessage.recipientId = this.recipientId;
 
-    this.hubConnection
-      .start()
-      .then(() => console.log('connected'))
-      .catch((err) => console.error(err.toString()));
-
     this.userService.sendMessage(this.authService.decodedToken.nameid, this.newMessage)
       .subscribe((message: Message) => {
-        this.messages.unshift(message);
-        this.newMessage.content = '';
+        // this.messages.unshift(message);
+        this.hubConnection.invoke('SendMessage', this.recipientId, message);
 
-        this.hubConnection.invoke('SendMessage', this.recipientId, message.content);
+        if (message.isRead === false && message.recipientId === this.authService.decodedToken.nameid) {
+          this.userService.markAsRead(this.authService.decodedToken.nameid, message.id);
+        }
+
+        this.newMessage.content = '';
 
     }, error => this.alertify.error(error));
   }

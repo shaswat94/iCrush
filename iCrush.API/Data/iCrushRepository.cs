@@ -16,7 +16,7 @@ namespace iCrush.API.Data
             this._context = context;
 
         }
-        
+
         /* Method of generic type to add data to memory(before changes are written to DB) */
         public void Add<T>(T entity) where T : class
         {
@@ -32,20 +32,20 @@ namespace iCrush.API.Data
         /* Method to return a particular user based on user id */
         public async Task<User> GetUser(int id)
         {
-           var user = await _context.Users.Include( p => p.Photos).FirstOrDefaultAsync(u => u.Id == id);
-           
-           return user;
+            var user = await _context.Users.Include(p => p.Photos).FirstOrDefaultAsync(u => u.Id == id);
+
+            return user;
         }
 
         /* Method to get a PagedList of Users based on the UserParams from the client */
         public async Task<PagedList<User>> GetUsers(UserParams userParams)
         {
-            var users =  _context.Users.Include( p => p.Photos)
+            var users = _context.Users.Include(p => p.Photos)
                 .OrderByDescending(u => u.LastActive).AsQueryable();
 
-            users = users.Where( u => u.Id != userParams.UserId);
-            
-            users = users.Where ( u => u.Gender == userParams.Gender );
+            users = users.Where(u => u.Id != userParams.UserId);
+
+            users = users.Where(u => u.Gender == userParams.Gender);
 
             if (userParams.Likers)
             {
@@ -59,16 +59,18 @@ namespace iCrush.API.Data
                 users = users.Where(u => userLikees.Contains(u.Id));
             }
 
-            if(userParams.MinAge != 18 || userParams.MaxAge != 99)
+            if (userParams.MinAge != 18 || userParams.MaxAge != 99)
             {
                 var minDob = DateTime.Today.AddYears(-userParams.MaxAge - 1);
                 var maxDob = DateTime.Today.AddYears(-userParams.MinAge);
 
-                users = users.Where( u => u.DateOfBirth >= minDob && u.DateOfBirth <= maxDob);
+                users = users.Where(u => u.DateOfBirth >= minDob && u.DateOfBirth <= maxDob);
             }
 
-            if(!string.IsNullOrEmpty(userParams.OrderBy)) {
-                switch (userParams.OrderBy) {
+            if (!string.IsNullOrEmpty(userParams.OrderBy))
+            {
+                switch (userParams.OrderBy)
+                {
                     case "created":
                         users = users.OrderByDescending(u => u.Created);
                         break;
@@ -88,10 +90,10 @@ namespace iCrush.API.Data
                 .Include(x => x.Likers)
                 .Include(x => x.Likees)
                 .FirstOrDefaultAsync(u => u.Id == id);
-            
+
             if (likers)
             {
-                return user.Likers.Where(u => u.LikeeId == id).Select( i => i.LikerId);
+                return user.Likers.Where(u => u.LikeeId == id).Select(i => i.LikerId);
             }
 
             return user.Likees.Where(u => u.LikerId == id).Select(i => i.LikeeId);
@@ -100,7 +102,7 @@ namespace iCrush.API.Data
         /* Method to get user photo by photo id */
         public async Task<Photo> GetPhoto(int id)
         {
-            var photo = await _context.Photos.FirstOrDefaultAsync( p => p.Id == id );
+            var photo = await _context.Photos.FirstOrDefaultAsync(p => p.Id == id);
 
             return photo;
         }
@@ -114,7 +116,7 @@ namespace iCrush.API.Data
         /* Method to return the user's main photo */
         public async Task<Photo> GetMainPhotoForUser(int userId)
         {
-            return await _context.Photos.Where( u => u.UserId == userId ).FirstOrDefaultAsync( p => p.IsMain);
+            return await _context.Photos.Where(u => u.UserId == userId).FirstOrDefaultAsync(p => p.IsMain);
         }
 
         /* Method to get user likes(who liked whom and who was liked by whom) */
@@ -126,7 +128,7 @@ namespace iCrush.API.Data
         /* Method to get message based on message id*/
         public async Task<Message> GetMessage(int id)
         {
-            return await _context.Messages.FirstOrDefaultAsync( m => m.Id == id);
+            return await _context.Messages.FirstOrDefaultAsync(m => m.Id == id);
         }
 
         /* Method to get conversation thread between two users */
@@ -135,13 +137,13 @@ namespace iCrush.API.Data
             var messages = await _context.Messages
                 .Include(u => u.Sender).ThenInclude(p => p.Photos)
                 .Include(u => u.Recipient).ThenInclude(p => p.Photos)
-                .Where(m => m.RecipientId == userId 
+                .Where(m => m.RecipientId == userId
                     && m.ReceiverDeleted == false
-                    && m.SenderId == recipientId || 
-                    m.RecipientId == recipientId 
+                    && m.SenderId == recipientId ||
+                    m.RecipientId == recipientId
                     && m.SenderId == userId && m.SenderDeleted == false)
                 .OrderByDescending(m => m.MessageSent).ToListAsync();
-            
+
             return messages;
         }
 
@@ -152,8 +154,8 @@ namespace iCrush.API.Data
                 .Include(u => u.Sender).ThenInclude(p => p.Photos)
                 .Include(u => u.Recipient).ThenInclude(p => p.Photos)
                 .AsQueryable();
-            
-            switch(messageParams.MessageContainer)
+
+            switch (messageParams.MessageContainer)
             {
                 case "Inbox":
                     messages = messages.Where(u => u.RecipientId == messageParams.UserId && u.ReceiverDeleted == false);
@@ -162,15 +164,24 @@ namespace iCrush.API.Data
                     messages = messages.Where(u => u.SenderId == messageParams.UserId && u.SenderDeleted == false);
                     break;
                 default: //Unread messages
-                    messages = messages.Where( u => u.RecipientId == messageParams.UserId 
-                     && u.SenderDeleted == false  && u.IsRead == false);
+                    messages = messages.Where(u => u.RecipientId == messageParams.UserId
+                    && u.SenderDeleted == false && u.IsRead == false);
                     break;
             }
 
             messages = messages.OrderByDescending(d => d.MessageSent);
-            
-            return await PagedList<Message>.CreateAsync(messages, 
+
+            return await PagedList<Message>.CreateAsync(messages,
                 messageParams.PageNumber, messageParams.PageSize);
+        }
+
+        /* Method returns if an user is online or not */
+        public async Task<bool> CheckUserOnlineStatus(int userId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            if (user == null) return false;
+
+            return user.IsActive;
         }
     }
 }

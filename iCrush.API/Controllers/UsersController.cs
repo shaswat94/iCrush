@@ -113,5 +113,16 @@ namespace iCrush.API.Controllers
             
             return BadRequest();
         }
+
+        [HttpGet("{id}/user/status")]
+        public async Task<IActionResult> GetUserStatus(int id)
+        {
+            if(id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+            
+            var userStatus = await _repo.CheckUserOnlineStatus(id);
+
+            return Ok(new {userId = id, isActive = userStatus});
+        }
     }
 }
