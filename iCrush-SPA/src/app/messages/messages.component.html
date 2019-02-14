@@ -24,13 +24,13 @@
       messageContainer == 'Outbox' ? message.recipientId : message.senderId]" 
         [queryParams]="{tab: 3}">
       <td>
-        <div *ngIf="messageContainer != 'Outbox'">
+        <div *ngIf="messageContainer !== 'Outbox'">
           <img [src]="message.senderPhotoUrl" class="img-circle">
           <strong>&nbsp; {{message.senderKnownAs}}</strong>
         </div>
-        <div *ngIf="messageContainer == 'Outbox'">
-          <img [src]="message.recipientPhotoUrl" class="img-circle">
-          <strong>&nbsp; {{message.recipientKnownAs}}</strong>
+        <div *ngIf="messageContainer === 'Outbox'">
+          <img [src]="message.senderPhotoUrl" class="img-circle">
+          <strong>&nbsp; {{message.senderKnownAs}}</strong>
         </div>
       </td>
       <td>{{message.content}}</td>

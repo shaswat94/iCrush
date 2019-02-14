@@ -137,4 +137,8 @@ export class UserService {
   setUserOnlineStatusOnLogout(userId: number, status: boolean) {
     return this.http.post(this.baseUrl + 'users/' + userId + '/setStatus/' + status, {});
   }
+
+  checkUserStatus(userId: number) {
+    return this.http.get(this.baseUrl + 'users/' + userId + '/user/status');
+  }
 }

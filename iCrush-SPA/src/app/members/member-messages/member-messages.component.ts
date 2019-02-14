@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/_services/auth.service';
 import { AlertifyService } from 'src/app/_services/alertify.service';
 import { tap } from 'rxjs/internal/operators/tap';
 import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
+import { SignalrService } from 'src/app/_services/signalr.service';
 
 @Component({
   selector: 'app-member-messages',
@@ -15,23 +16,24 @@ export class MemberMessagesComponent implements OnInit {
   @Input() recipientId: number;
   messages: Message[];
   newMessage: any = {};
-  hubConnection: HubConnection;
+  // hubConnection: HubConnection;
 
   constructor(private userService: UserService, private authService: AuthService,
-      private alertify: AlertifyService) { }
+      private alertify: AlertifyService,
+      private signalrService: SignalrService) { }
 
   ngOnInit() {
-    const builder = new HubConnectionBuilder();
-    this.hubConnection = builder.withUrl('http://localhost:5000/signalr').build();
+    // const builder = new HubConnectionBuilder();
+    // this.hubConnection = builder.withUrl('http://localhost:5000/signalr').build();
 
-    this.hubConnection
+    this.signalrService
       .start()
       .then(() => console.log('connected'))
       .catch((err) => console.error(err.toString()));
 
     this.loadMessages();
 
-    this.hubConnection.on('Send', (id, message) => {
+    this.signalrService.on('Send', (id, message) => {
       console.log('Back from Server');
       this.messages.unshift(message);
     });
@@ -60,12 +62,8 @@ export class MemberMessagesComponent implements OnInit {
 
     this.userService.sendMessage(this.authService.decodedToken.nameid, this.newMessage)
       .subscribe((message: Message) => {
-        // this.messages.unshift(message);
-        this.hubConnection.invoke('SendMessage', this.recipientId, message);
-
-        if (message.isRead === false && message.recipientId === this.authService.decodedToken.nameid) {
-          this.userService.markAsRead(this.authService.decodedToken.nameid, message.id);
-        }
+        message.isRead = true;
+        this.signalrService.invoke('SendMessage', this.recipientId, message);
 
         this.newMessage.content = '';
 

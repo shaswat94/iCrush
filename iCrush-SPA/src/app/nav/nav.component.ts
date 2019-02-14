@@ -4,6 +4,7 @@ import { AlertifyService } from '../_services/alertify.service';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../_services/user.service';
+import { SignalrService } from '../_services/signalr.service';
 
 @Component({
   selector: 'app-nav',
@@ -16,8 +17,10 @@ export class NavComponent implements OnInit {
   constructor(public authService: AuthService,
     private userService: UserService,
     private alertify: AlertifyService,
-    private router: Router) { }
+    private router: Router,
+    private signalrService: SignalrService) { }
   photoUrl: string;
+
   ngOnInit() {
     this.authService.currentPhotoUrl.subscribe(photoUrl => this.photoUrl = photoUrl);
   }
@@ -25,6 +28,10 @@ export class NavComponent implements OnInit {
   login(form: NgForm) {
     this.authService.login(this.model)
       .subscribe(next => {
+        this.signalrService.start()
+            .then( () => console.log('connectred'))
+            .catch(err => console.log(err));
+
         this.alertify.success('Logged in successfully');
         form.reset();
       }, error => {

@@ -1,3 +1,4 @@
+//#region '@angular and 3rd party libs'
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -7,7 +8,9 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { NgxGalleryModule } from 'ngx-gallery';
 import { FileUploadModule } from 'ng2-file-upload';
 import {TimeAgoPipe} from 'time-ago-pipe';
+//#endregion
 
+//#region 'Material Modules'
 import {MatIconModule} from '@angular/material/icon';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -24,37 +27,50 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTableModule} from '@angular/material/table';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 import 'hammerjs';
+//#endregion
 
+//#region 'Services'
+import { AuthService } from './_services/auth.service';
+import { AlertifyService } from './_services/alertify.service';
+import { UserService } from './_services/user.service';
+import { SignalrService } from './_services/signalr.service';
+//#endregion
+
+import { ErrorInterceptorProvider } from './_services/error.interceptor';
+
+//#region 'Components'
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
-import { AuthService } from './_services/auth.service';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
-import { ErrorInterceptorProvider } from './_services/error.interceptor';
-import { AlertifyService } from './_services/alertify.service';
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
 import { MemberCardComponent } from './members/member-card/member-card.component';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MemberEditComponent } from './members/member-edit/member-edit.component';
+import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
+import { MemberListFiltersComponent } from './members/member-list-filters/member-list-filters.component';
+import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
+//#endregion
 
+//#region 'Routes and RouteGuards'
 import { appRoutes } from './routes';
 import { AuthGuard } from './_guards/auth.guard';
-import { UserService } from './_services/user.service';
+//#endregion
+
+//#region 'Route Resolver'
 import { MemberDetailResolver } from './_resolver/member-detail.resolver';
 import { MemberListResolver } from './_resolver/member-list.resolver';
-import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { MemberEditResolver } from './_resolver/member-edit.resolver';
 import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
-import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MemberListFiltersComponent } from './members/member-list-filters/member-list-filters.component';
 import { ListsResolver } from './_resolver/lists.resolver';
 import { MessagesResolver } from './_resolver/messages.resolver';
-import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
+//#endregion
 
 export function tokenGetter() {
    return localStorage.getItem('token');
@@ -122,7 +138,8 @@ export function tokenGetter() {
       MemberEditResolver,
       PreventUnsavedChanges,
       ListsResolver,
-      MessagesResolver
+      MessagesResolver,
+      SignalrService
    ],
    bootstrap: [
       AppComponent
