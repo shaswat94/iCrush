@@ -20,5 +20,16 @@ namespace iCrush.API.Hubs
         {
             await Clients.All.SendAsync("Send", id, messageToReturnDto);
         }
+
+        public async Task SendTyping(object sender)
+        {
+            // Broadcast the typing notification to all clients except the sender
+            await Clients.Others.SendAsync("typing", sender);
+        }
+
+        public async Task SendLogOutMessage()
+        {
+            await Clients.Others.SendAsync("loggedOut", false);
+        }
     }
 }

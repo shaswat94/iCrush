@@ -1,4 +1,13 @@
 <div class="container">
+  <div class="is-typing" *ngIf="userDetail">
+    <span>{{userDetail.username}}</span> is typing
+    <div class="typing-indicator">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+
   <div class="no-messages" *ngIf="messages?.length === 0">
     <mat-icon>mood_bad</mat-icon>
     <p>Please send messages to start a conversation.</p>
@@ -41,11 +50,9 @@
   </div>
 </div>
 <div class="chat-form-wrapper">
-  <form #messageForm="ngForm" (ngSubmit) = "messageForm.valid && sendMessage()">
-    <input class="chat-input"  [(ngModel)]="newMessage.content"
-      name="content"
-      required
-      placeholder="Type your message here">
+  <form #messageForm="ngForm" (ngSubmit)="messageForm.valid && sendMessage()">
+    <input class="chat-input" [(ngModel)]="newMessage.content" name="content" required 
+      placeholder="Type your message here" (blur)="reset()" (focus)="setInput()">
     <button mat-button class="chat-button" [disabled]="!messageForm.valid">
       <mat-icon>send</mat-icon>
     </button>

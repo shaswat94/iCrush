@@ -3,67 +3,73 @@
     <h1>{{user.knownAs}}'s Profile</h1>
   </div>
   <div class="user-card-container pr-5 col-lg-4 col-md-6 col-sm-12">
-      <mat-card class="user-card mb-4">
-          <mat-card-header>
-            <mat-card-title>
-              <mat-icon>
-                person
-              </mat-icon>
-              <div class="user-known-as">
-                {{ user.knownAs }},
-              </div>
-              <span>
-                {{user.age}}
-              </span>
-            </mat-card-title>
-            <mat-card-subtitle>
-              <mat-icon>place</mat-icon> <span>{{user.city}}, {{user.country}}</span><br>
-            </mat-card-subtitle>
-          </mat-card-header>
-          <div class="card-image-wrapper">
-            <img mat-card-image src="{{user.photoUrl || '../../../../../assets/user.png'}}" alt="{{user.knownAs}}">
+    <mat-card class="user-card mb-4">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>
+            person
+          </mat-icon>
+          <div class="user-known-as">
+            {{ user.knownAs }},
           </div>
-          <mat-card-content>
-              <strong>Last Active:</strong>
-              <p>{{user.lastActive | timeAgo}}</p>
-              <strong>Date Created:</strong>
-              <p>{{user.created | date}}</p>
-          </mat-card-content>
-          <mat-card-actions class="text-center">
-            <button mat-button>LIKE</button>
-            <button mat-button (click)="selectTab(3)">MESSAGE</button>
-          </mat-card-actions>
-        </mat-card>
+          <span>
+            {{user.age}}
+          </span>
+        </mat-card-title>
+        <mat-card-subtitle>
+          <mat-icon>place</mat-icon> <span>{{user.city}}, {{user.country}}</span><br>
+        </mat-card-subtitle>
+      </mat-card-header>
+      <div class="card-image-wrapper">
+        <img mat-card-image src="{{user.photoUrl || '../../../../../assets/user.png'}}" alt="{{user.knownAs}}">
+      </div>
+      <mat-card-content *ngIf="!user.isActive">
+        <strong>Last Active:</strong>
+        <p>{{user.lastActive | timeAgo}}</p>
+        <strong>Date Created:</strong>
+        <p>{{user.created | date}}</p>
+      </mat-card-content>
+      <mat-card-content *ngIf="user.isActive">
+        <strong class="online">Online</strong>
+        <strong>Date Created:</strong>
+        <p>{{user.created | date}}</p>
+      </mat-card-content>
+
+      <mat-card-actions class="text-center">
+        <button mat-button>LIKE</button>
+        <button mat-button (click)="selectTab(3)">MESSAGE</button>
+      </mat-card-actions>
+    </mat-card>
   </div>
   <div class="user-detail col-lg-8 col-md-5 col-sm-12">
     <mat-tab-group #memberTabs>
       <mat-tab label="About {{user.knownAs}}">
         <div *ngIf="(user.introduction && user.lookingFor)">
-            <h4>Description</h4>
-            <p>{{user.introduction }}</p>
+          <h4>Description</h4>
+          <p>{{user.introduction }}</p>
 
-            <h4>Looking For</h4>
-            <p>{{user.lookingFor}}</p>  
+          <h4>Looking For</h4>
+          <p>{{user.lookingFor}}</p>
         </div>
         <div *ngIf="!(user.introduction && user.lookingFor)" class="no-data">
-            No Information added yet!
+          No Information added yet!
         </div>
       </mat-tab>
       <mat-tab label="Interests">
         <div *ngIf="(user.interests)">
-            <h4>Interests</h4>
-            <p>{{user.interests}}</p>
+          <h4>Interests</h4>
+          <p>{{user.interests}}</p>
         </div>
         <div *ngIf="!(user.interests)" class="no-data">
           No Information added yet!
-        </div> 
-        
+        </div>
+
       </mat-tab>
-      <mat-tab label="Photos"> 
-          <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+      <mat-tab label="Photos">
+        <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
       </mat-tab>
-      <mat-tab label="Messages"> 
-          <app-member-messages [recipientId]="user.id"></app-member-messages>
+      <mat-tab label="Messages">
+        <app-member-messages [recipientId]="user.id"></app-member-messages>
       </mat-tab>
     </mat-tab-group>
   </div>
