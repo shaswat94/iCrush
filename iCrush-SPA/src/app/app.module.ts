@@ -8,6 +8,7 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { NgxGalleryModule } from 'ngx-gallery';
 import { FileUploadModule } from 'ng2-file-upload';
 import {TimeAgoPipe} from 'time-ago-pipe';
+import {NgxAutoScrollModule} from 'ngx-auto-scroll';
 //#endregion
 
 //#region 'Material Modules'
@@ -125,7 +126,8 @@ export function tokenGetter() {
          }
       }),
       NgxGalleryModule,
-      FileUploadModule
+      FileUploadModule,
+      NgxAutoScrollModule
    ],
    providers: [
       AuthService,

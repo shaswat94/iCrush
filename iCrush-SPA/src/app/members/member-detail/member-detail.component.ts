@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild, OnDestroy } from '@angular/core';
 import { User } from 'src/app/_models/user';
 import { AlertifyService } from 'src/app/_services/alertify.service';
 import { UserService } from 'src/app/_services/user.service';
@@ -13,7 +13,7 @@ import { SignalrService } from 'src/app/_services/signalr.service';
   styleUrls: ['./member-detail.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class MemberDetailComponent implements OnInit {
+export class MemberDetailComponent implements OnInit, OnDestroy {
   @ViewChild('memberTabs') memberTabs: MatTabGroup;
   user: User;
   galleryOptions: NgxGalleryOptions[];
@@ -48,6 +48,17 @@ export class MemberDetailComponent implements OnInit {
     this.signalrService.on('loggedOut', (onlineStatus) => {
       this.user.isActive = onlineStatus;
     });
+
+    this.signalrService.on('loggedIn', (onlineStatus) => {
+      console.log(onlineStatus);
+      if (this.user.id === onlineStatus.userId) {
+        this.user.isActive = onlineStatus.status;
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.signalrService.stop();
   }
 
   getImages() {

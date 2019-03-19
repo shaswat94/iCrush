@@ -31,5 +31,10 @@ namespace iCrush.API.Hubs
         {
             await Clients.Others.SendAsync("loggedOut", false);
         }
+
+        public async Task SendLogInMessage(object sender)
+        {
+            await Clients.All.SendAsync("loggedIn", sender);
+        }
     }
 }

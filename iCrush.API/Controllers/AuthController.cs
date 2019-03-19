@@ -50,11 +50,13 @@ namespace iCrush.API.Controllers
             if (userFromRepo == null)
                 return Unauthorized();
             
+            _repo.SetUserOnlineStatus(userFromRepo.Id, true);
+
             var user = _mapper.Map<UserForListDto>(userFromRepo);
 
             var token = CreateJwtToken(userFromRepo);
 
-            _repo.SetUserOnlineStatus(user.Id, true);
+            
 
             return Ok(new
             {  
